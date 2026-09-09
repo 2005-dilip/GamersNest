@@ -127,34 +127,49 @@ const GROQ_MODELS = [
 function parseInlineMarkdown(text) {
   if (!text) return "";
 
-  // 1. Sanitize asterisks so no raw ** or * ever leaks out in UI
-  let cleaned = text
-    .replace(/\*{3,}/g, "**")
-    .replace(/(\s|^|\()\*\s*([^*]+)\*\*/g, "$1**$2**")   // '*Sports & Racing**' -> '**Sports & Racing**'
-    .replace(/(\s|^|\()\*\*([^*]+)\*(?!\*)/g, "$1**$2**") // '**Sports & Racing*' -> '**Sports & Racing**'
-    .replace(/\*\*/g, "™DOUBLESTAR™");                    // Protect valid pairs
+  // 1. Normalize all 3+ asterisks to **
+  let s = text.replace(/\*{3,}/g, "**");
 
-  // Remove any remaining single stray *
-  cleaned = cleaned.replace(/\*/g, "").replace(/™DOUBLESTAR™/g, "**");
+  // 2. Fix mismatched boundary asterisks: '*Text**' -> '**Text**', '**Text*' -> '**Text**'
+  s = s.replace(/(^|\s|\()\*\s*([^*]+)\*\*/g, "$1**$2**");
+  s = s.replace(/(^|\s|\()\*\*([^*]+)\*(?!\*)/g, "$1**$2**");
 
-  // If there's an odd number of '**', balance or strip unmatched **
-  const countStars = (cleaned.match(/\*\*/g) || []).length;
-  if (countStars % 2 !== 0) {
-    cleaned = cleaned.replace(/\*\*(?=[^*]*$)/, "");
+  // 3. Extract valid paired **bold** text blocks
+  const boldRegex = /\*\*([^*]+)\*\*/g;
+  const tokens = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = boldRegex.exec(s)) !== null) {
+    // Add text before match (strip any remaining stray asterisks from plain text)
+    if (match.index > lastIndex) {
+      const plainText = s.slice(lastIndex, match.index).replace(/\*/g, "");
+      if (plainText) tokens.push(plainText);
+    }
+    // Add bold token
+    const boldContent = match[1].replace(/\*/g, "");
+    if (boldContent) {
+      tokens.push({ bold: true, content: boldContent });
+    }
+    lastIndex = boldRegex.lastIndex;
   }
 
-  // 2. Tokenize bold **text**
-  const parts = cleaned.split(/(\*\*[^*]+\*\*)/g);
-  return parts.map((part, pIdx) => {
-    if (part.startsWith("**") && part.endsWith("**") && part.length >= 4) {
-      const boldText = part.slice(2, -2);
+  // Add remaining trailing text (strip any remaining stray asterisks)
+  if (lastIndex < s.length) {
+    const trailingText = s.slice(lastIndex).replace(/\*/g, "");
+    if (trailingText) tokens.push(trailingText);
+  }
+
+  // 4. Render tokens as React elements
+  return tokens.map((token, idx) => {
+    if (typeof token === "object" && token.bold) {
       return (
-        <strong key={pIdx} style={{ color: "#00f2fe", fontWeight: 700 }}>
-          {boldText}
+        <strong key={idx} style={{ color: "#00f2fe", fontWeight: 700 }}>
+          {token.content}
         </strong>
       );
     }
-    return part;
+    return token;
   });
 }
 
