@@ -205,7 +205,7 @@ export const GamerCharacterWalk: React.FC<GamerCharacterWalkProps> = ({
 
   return (
     <div
-      className={`fixed bottom-[64px] sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-40 pointer-events-none overflow-visible h-14 sm:h-20 md:h-24 shell-width ${className}`}
+      className={`fixed bottom-[calc(64px+env(safe-area-inset-bottom,0px))] sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-40 pointer-events-none overflow-visible h-14 sm:h-20 md:h-24 shell-width ${className}`}
       aria-hidden="true"
     >
       <div

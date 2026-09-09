@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch, Redirect } from "wouter";
+import { Route, Switch, Redirect, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
@@ -15,6 +15,17 @@ import { AdminConnect } from "./pages/admin/AdminConnect";
 import { AdminDataManagement } from "./pages/admin/AdminDataManagement";
 // @ts-ignore
 import Chatbot from "./Chatbot";
+
+function ConditionalChatbot() {
+  const [location] = useLocation();
+
+  // Hide the AI chatbot when navigating or logged in to the admin board
+  if (location.startsWith("/admin")) {
+    return null;
+  }
+
+  return <Chatbot />;
+}
 
 function Router() {
   return (
@@ -65,7 +76,7 @@ function App() {
           <TooltipProvider>
             <Toaster />
             <Router />
-            <Chatbot />
+            <ConditionalChatbot />
           </TooltipProvider>
         </AdminAuthProvider>
       </ThemeProvider>

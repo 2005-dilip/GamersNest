@@ -18,7 +18,7 @@ export const FutureGamesSection: React.FC<FutureGamesSectionProps> = ({ activeCa
   }, [activeCategory]);
 
   return (
-    <div className="mt-16 sm:mt-20 border-t border-slate-800/80 pt-12 relative">
+    <div className="mt-16 sm:mt-20 border-t border-slate-800/80 pt-12 relative overflow-hidden">
       {/* Background Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#00f2fe]/5 rounded-full blur-[140px] pointer-events-none" />
 

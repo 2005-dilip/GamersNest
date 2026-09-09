@@ -112,4 +112,6 @@ temp/
 client/public/__manus__/version.json
 .project-config.json
 gamersnest-angular/
+.playwright-mcp/
+
 
