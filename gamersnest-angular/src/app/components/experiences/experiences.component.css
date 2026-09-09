@@ -1,0 +1,30 @@
+.experiences-section { padding-top: 30px; }
+.experience-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 13px; margin-top: 64px; }
+.experience-card { position: relative; min-height: 400px; grid-column: span 2; overflow: hidden; isolation: isolate; background: #10181c; }
+.experience-card:nth-child(1), .experience-card:nth-child(2) { grid-column: span 3; }
+.experience-card:nth-child(4) { grid-column: span 2; }
+.experience-card img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.23,1,.32,1), filter .7s ease; }
+.experience-card:hover img { transform: scale(1.065); filter: saturate(1.12); }
+.card-tint { position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(3,8,10,.94), rgba(3,8,10,.1) 64%); }
+.card-tint-cyan { background: linear-gradient(145deg, rgba(73,232,255,.17), transparent 42%), linear-gradient(0deg, rgba(3,8,10,.94), rgba(3,8,10,.1) 68%); }
+.card-tint-lime { background: linear-gradient(145deg, rgba(196,255,61,.16), transparent 42%), linear-gradient(0deg, rgba(3,8,10,.94), rgba(3,8,10,.1) 68%); }
+.experience-card::after { content: ""; position: absolute; inset: 0; border: 1px solid rgba(255,255,255,.12); pointer-events: none; }
+.experience-card:hover::after { border-color: rgba(73,232,255,.5); box-shadow: inset 0 0 35px rgba(73,232,255,.08); }
+.experience-index { position: absolute; top: 20px; left: 21px; color: rgba(255,255,255,.55); font-family: var(--font-display); font-size: 10px; letter-spacing: .15em; }
+.experience-content { position: absolute; right: 21px; bottom: 21px; left: 21px; }
+.experience-content .card-kicker { color: #c4ff3d; }
+.experience-content h3 { margin: 12px 0 10px; color: #fff; font-family: var(--font-display); font-size: clamp(1.1rem, 1.8vw, 1.65rem); font-weight: 700; letter-spacing: -.05em; line-height: .95; }
+.experience-content p { min-height: 47px; margin: 0 0 20px; color: #bdc8c6; font-size: 13px; line-height: 1.42; }
+.experience-content .card-link { color: #49e8ff; }
+
+@media (max-width: 1050px) {
+  .experience-card, .experience-card:nth-child(1), .experience-card:nth-child(2), .experience-card:nth-child(4) { grid-column: span 4; }
+  .experience-card:nth-child(4), .experience-card:nth-child(5) { min-height: 350px; }
+  .experience-card:nth-child(5) { grid-column: span 6; }
+}
+
+@media (max-width: 760px) {
+  .experience-grid { display: flex; gap: 11px; margin-top: 43px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .experience-grid::-webkit-scrollbar { display: none; }
+  .experience-card, .experience-card:nth-child(1), .experience-card:nth-child(2), .experience-card:nth-child(4), .experience-card:nth-child(5) { min-width: 78vw; min-height: 380px; flex: 0 0 78vw; scroll-snap-align: start; }
+}

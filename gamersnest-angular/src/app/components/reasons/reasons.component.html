@@ -1,0 +1,19 @@
+<section class="reasons-section section-pad shell-width">
+  <app-section-label eyebrow="THE DIFFERENCE" title="WHY GAMERS NEST?"></app-section-label>
+  <div class="reasons-grid">
+    @for (reason of content.reasons; track reason.title; let i = $index) {
+      <article class="reason-card">
+        <span class="reason-index">0{{ i + 1 }}</span>
+        @switch (reason.icon) {
+          @case ('users') { <svg lucideUsers [size]="23" [strokeWidth]="1.5"></svg> }
+          @case ('gamepad') { <svg lucideGamepad2 [size]="23" [strokeWidth]="1.5"></svg> }
+          @case ('play') { <svg lucidePlay [size]="23" [strokeWidth]="1.5"></svg> }
+          @case ('trophy') { <svg lucideTrophy [size]="23" [strokeWidth]="1.5"></svg> }
+          @case ('zap') { <svg lucideZap [size]="23" [strokeWidth]="1.5"></svg> }
+        }
+        <h3>{{ reason.title }}</h3>
+        <p>{{ reason.description }}</p>
+      </article>
+    }
+  </div>
+</section>

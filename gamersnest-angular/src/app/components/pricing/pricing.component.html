@@ -1,0 +1,33 @@
+<section id="pricing" class="pricing-section section-pad">
+  <div class="shell-width">
+    <div class="section-heading-row">
+      <app-section-label
+        eyebrow="THE PLAY LIST"
+        title="PLAY YOUR WAY"
+        copy="Choose your setup and start playing."
+      ></app-section-label>
+      <span class="offer-label">SUMMER OFFER</span>
+    </div>
+    <div class="pricing-grid">
+      @for (item of content.pricing; track item.title; let i = $index) {
+        <article class="price-card" [class.price-card-featured]="i === 1">
+          <span class="price-number">0{{ i + 1 }}</span>
+          <span class="card-kicker">{{ item.accent }}</span>
+          <h3>{{ item.title }}</h3>
+          @if (item.tiers) {
+            <div class="tier-list">
+              @for (tier of item.tiers; track tier[0]) {
+                <div><span>{{ tier[0] }}</span><strong>{{ tier[1] }}</strong></div>
+              }
+            </div>
+          } @else {
+            <div class="price-value"><strong>{{ item.price }}</strong><span>{{ item.detail }}</span></div>
+          }
+          <button class="price-action" (click)="bookSetup(item.title)">
+            BOOK THIS SETUP <svg lucideArrowUpRight [size]="15"></svg>
+          </button>
+        </article>
+      }
+    </div>
+  </div>
+</section>

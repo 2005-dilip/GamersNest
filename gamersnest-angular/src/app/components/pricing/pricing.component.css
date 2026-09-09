@@ -1,0 +1,26 @@
+.pricing-section { margin-top: 70px; background: #0d1418; border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); }
+.offer-label { padding: 10px 12px; color: #091014; background: #c4ff3d; font-family: var(--font-display); font-size: 9px; font-weight: 800; letter-spacing: .16em; white-space: nowrap; }
+.pricing-grid { display: grid; grid-template-columns: 1fr 1.5fr 1fr 1fr; gap: 12px; margin-top: 64px; }
+.price-card { position: relative; min-height: 270px; padding: 42px 24px 25px; border: 1px solid rgba(255,255,255,.11); background: rgba(255,255,255,.025); transition: transform .23s ease, border-color .23s ease, background .23s ease; }
+.price-card:hover { transform: translateY(-5px); border-color: rgba(73,232,255,.48); background: rgba(73,232,255,.045); }
+.price-card-featured { background: linear-gradient(150deg, rgba(73,232,255,.12), rgba(196,255,61,.04)); border-color: rgba(73,232,255,.3); }
+.price-number { position: absolute; top: 20px; left: 21px; color: rgba(255,255,255,.55); font-family: var(--font-display); font-size: 10px; letter-spacing: .15em; }
+.price-card .card-kicker { color: #8f9b9e; }
+.price-card h3 { margin: 13px 0 30px; color: #f5f8f6; font-family: var(--font-display); font-size: 19px; letter-spacing: -.04em; }
+.price-value { display: flex; align-items: baseline; gap: 7px; }
+.price-value strong { color: #c4ff3d; font-family: var(--font-display); font-size: 34px; letter-spacing: -.07em; }
+.price-value span { color: #9caaab; font-size: 13px; }
+.tier-list { display: grid; gap: 8px; margin-top: -2px; }
+.tier-list div { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,.09); color: #b0bbbb; font-size: 12px; }
+.tier-list strong { color: #f6f8f4; font-size: 12px; }
+.price-action { position: absolute; right: 24px; bottom: 23px; color: #49e8ff; }
+
+@media (max-width: 1050px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .pricing-section { margin-top: 20px; }
+  .pricing-grid { grid-template-columns: 1fr; margin-top: 43px; }
+  .price-card { min-height: 235px; }
+}

@@ -1,0 +1,462 @@
+- generic [ref=e4]:
+  - banner [ref=e6]:
+    - link "Gamers Nest home" [ref=e7] [cursor=pointer]:
+      - /url: "#home"
+      - generic [ref=e8]:
+        - strong [ref=e9]: GAMERS
+        - emphasis [ref=e10]: NEST
+    - navigation "Primary navigation" [ref=e11]:
+      - link "HOME" [ref=e12] [cursor=pointer]:
+        - /url: "#home"
+      - link "EXPERIENCES" [ref=e13] [cursor=pointer]:
+        - /url: "#experiences"
+      - link "GAMES" [ref=e14] [cursor=pointer]:
+        - /url: "#games"
+      - link "PRICING" [ref=e15] [cursor=pointer]:
+        - /url: "#pricing"
+      - link "GALLERY" [ref=e16] [cursor=pointer]:
+        - /url: "#gallery"
+      - link "REVIEWS" [ref=e17] [cursor=pointer]:
+        - /url: "#reviews"
+      - link "LOCATION" [ref=e18] [cursor=pointer]:
+        - /url: "#location"
+    - button "BOOK NOW" [ref=e19] [cursor=pointer]
+  - main [ref=e23]:
+    - generic [ref=e25]:
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: GAMERS NEST / AYAPPAKKAM
+          - paragraph [ref=e31]: PREMIUM E-GAMING LOUNGE
+          - heading "PLAY. COMPETE. CONQUER." [level=1] [ref=e32]: PLAY.COMPETE.CONQUER.
+          - paragraph [ref=e33]: Your gaming zone in Ayappakkam.
+          - generic [ref=e34]:
+            - button "BOOK YOUR SESSION" [ref=e35] [cursor=pointer]
+            - button "EXPLORE GAMES" [ref=e39] [cursor=pointer]
+          - generic [ref=e42]:
+            - generic [ref=e43]: AYAPPAKKAM, CHENNAI
+            - generic [ref=e47]: 11:00 AM – 11:00 PM
+        - generic [ref=e51]: REAL SPACE.REAL PLAY.
+      - generic [ref=e54]:
+        - generic [ref=e55]: 01 / 06
+        - generic [ref=e57]: SCROLL TO EXPLORE
+    - generic [ref=e62]:
+      - generic [ref=e63]:
+        - generic "WELCOME TO THE NEST" [ref=e64]:
+          - generic [ref=e65]:
+            - generic [ref=e66]: THE NEST
+            - heading "WELCOME TO THE NEST" [level=2] [ref=e68]
+        - paragraph [ref=e69]: A place where gamers come to play, compete, race and experience their favourite games with friends.
+        - button "SEE THE EXPERIENCES" [ref=e70] [cursor=pointer]
+      - generic [ref=e74]:
+        - img "Real gaming interior at Gamers Nest" [ref=e75]
+        - generic [ref=e76]: 01 / THE SPACE
+    - generic [ref=e78]:
+      - generic "WHAT ARE YOU HERE FOR?" [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]: CHOOSE YOUR MODE
+          - heading "WHAT ARE YOU HERE FOR?" [level=2] [ref=e83]
+          - paragraph [ref=e84]: One lounge. Five ways to play.
+      - generic [ref=e85]:
+        - article [ref=e86]:
+          - img "ps2 gaming experience at Gamers Nest" [ref=e87]
+          - generic [ref=e89]: "01"
+          - generic [ref=e90]:
+            - generic [ref=e91]: ₹60 / hour
+            - heading "PS2 GAMING" [level=3] [ref=e92]
+            - paragraph [ref=e93]: Relive classic gaming experiences with your friends.
+            - button "EXPLORE / BOOK" [ref=e94] [cursor=pointer]
+        - article [ref=e99]:
+          - img "ps4 gaming experience at Gamers Nest" [ref=e100]
+          - generic [ref=e102]: "02"
+          - generic [ref=e103]:
+            - generic [ref=e104]: From ₹70 / player / hour
+            - heading "PS4 GAMING" [level=3] [ref=e105]
+            - paragraph [ref=e106]: Jump into your favourite competitive and action titles.
+            - button "EXPLORE / BOOK" [ref=e107] [cursor=pointer]
+        - article [ref=e112]:
+          - img "ps5 gaming experience at Gamers Nest" [ref=e113]
+          - generic [ref=e115]: "03"
+          - generic [ref=e116]:
+            - generic [ref=e117]: From ₹70 / player / hour
+            - heading "PS5 GAMING" [level=3] [ref=e118]
+            - paragraph [ref=e119]: Experience modern gaming on a premium setup.
+            - button "EXPLORE / BOOK" [ref=e120] [cursor=pointer]
+        - article [ref=e125]:
+          - img "racing simulator experience at Gamers Nest" [ref=e126]
+          - generic [ref=e128]: "04"
+          - generic [ref=e129]:
+            - generic [ref=e130]: ₹120 / hour
+            - heading "RACING SIMULATOR" [level=3] [ref=e131]
+            - paragraph [ref=e132]: Get behind the wheel and experience high-speed racing.
+            - button "EXPLORE / BOOK" [ref=e133] [cursor=pointer]
+        - article [ref=e138]:
+          - img "vr gaming experience at Gamers Nest" [ref=e139]
+          - generic [ref=e141]: "05"
+          - generic [ref=e142]:
+            - generic [ref=e143]: ₹120 / hour
+            - heading "VR GAMING" [level=3] [ref=e144]
+            - paragraph [ref=e145]: Step beyond the screen and into an immersive virtual world.
+            - button "EXPLORE / BOOK" [ref=e146] [cursor=pointer]
+    - generic [ref=e152]:
+      - generic [ref=e153]:
+        - generic "CHOOSE YOUR BATTLE" [ref=e154]:
+          - generic [ref=e155]:
+            - generic [ref=e156]: GAME LIBRARY
+            - heading "CHOOSE YOUR BATTLE" [level=2] [ref=e158]
+            - paragraph [ref=e159]: A selection of games and experiences available at the lounge.
+        - generic [ref=e160]: SELECT YOURPLAYLIST
+      - tablist "Game categories" [ref=e161]:
+        - tab "ALL" [selected] [ref=e162] [cursor=pointer]
+        - tab "SPORTS" [ref=e163] [cursor=pointer]
+        - tab "FIGHTING" [ref=e164] [cursor=pointer]
+        - tab "OPEN WORLD" [ref=e165] [cursor=pointer]
+        - tab "ACTION" [ref=e166] [cursor=pointer]
+        - tab "RACING" [ref=e167] [cursor=pointer]
+        - tab "VR" [ref=e168] [cursor=pointer]
+      - generic [ref=e169]:
+        - article [ref=e170]:
+          - generic [ref=e172]:
+            - generic [ref=e173]: SPORTS
+            - heading "EA SPORTS FC 25" [level=3] [ref=e174]
+        - article [ref=e178]:
+          - generic [ref=e180]:
+            - generic [ref=e181]: SPORTS
+            - heading "WWE 2K25" [level=3] [ref=e182]
+        - article [ref=e186]:
+          - generic [ref=e188]:
+            - generic [ref=e189]: FIGHTING
+            - heading "Mortal Kombat 1" [level=3] [ref=e190]
+        - article [ref=e194]:
+          - generic [ref=e196]:
+            - generic [ref=e197]: OPEN WORLD
+            - heading "Grand Theft Auto V" [level=3] [ref=e198]
+        - article [ref=e202]:
+          - generic [ref=e204]:
+            - generic [ref=e205]: OPEN WORLD
+            - heading "Red Dead Redemption 2" [level=3] [ref=e206]
+        - article [ref=e210]:
+          - generic [ref=e212]:
+            - generic [ref=e213]: ACTION
+            - heading "God of War" [level=3] [ref=e214]
+        - article [ref=e218]:
+          - generic [ref=e220]:
+            - generic [ref=e221]: ACTION
+            - heading "Metro Exodus" [level=3] [ref=e222]
+        - article [ref=e226]:
+          - generic [ref=e228]:
+            - generic [ref=e229]: ACTION
+            - heading "Uncharted" [level=3] [ref=e230]
+        - article [ref=e234]:
+          - generic [ref=e236]:
+            - generic [ref=e237]: RACING
+            - heading "Forza Horizon" [level=3] [ref=e238]
+        - article [ref=e242]:
+          - generic [ref=e244]:
+            - generic [ref=e245]: VR
+            - heading "VR Gaming Experiences" [level=3] [ref=e246]
+    - generic [ref=e252]:
+      - generic [ref=e253]:
+        - generic "PLAY YOUR WAY" [ref=e254]:
+          - generic [ref=e255]:
+            - generic [ref=e256]: THE PLAY LIST
+            - heading "PLAY YOUR WAY" [level=2] [ref=e258]
+            - paragraph [ref=e259]: Choose your setup and start playing.
+        - generic [ref=e260]: SUMMER OFFER
+      - generic [ref=e261]:
+        - article [ref=e262]:
+          - generic [ref=e263]: "01"
+          - generic [ref=e264]: Classic
+          - heading "PS2" [level=3] [ref=e265]
+          - generic [ref=e266]:
+            - strong [ref=e267]: ₹60
+            - generic [ref=e268]: / hour
+          - button "BOOK THIS SETUP" [ref=e269] [cursor=pointer]
+        - article [ref=e273]:
+          - generic [ref=e274]: "02"
+          - generic [ref=e275]: Squad play
+          - heading "PS4 & PS5" [level=3] [ref=e276]
+          - generic [ref=e277]:
+            - generic [ref=e278]:
+              - generic [ref=e279]: 1 Player
+              - strong [ref=e280]: ₹100 / hour
+            - generic [ref=e281]:
+              - generic [ref=e282]: 2 Players
+              - strong [ref=e283]: ₹80 / player / hour
+            - generic [ref=e284]:
+              - generic [ref=e285]: 3 Players
+              - strong [ref=e286]: ₹70 / player / hour
+            - generic [ref=e287]:
+              - generic [ref=e288]: 4 Players
+              - strong [ref=e289]: ₹70 / player / hour
+          - button "BOOK THIS SETUP" [ref=e290] [cursor=pointer]
+        - article [ref=e294]:
+          - generic [ref=e295]: "03"
+          - generic [ref=e296]: Take the wheel
+          - heading "CAR SIMULATOR" [level=3] [ref=e297]
+          - generic [ref=e298]:
+            - strong [ref=e299]: ₹120
+            - generic [ref=e300]: / hour
+          - button "BOOK THIS SETUP" [ref=e301] [cursor=pointer]
+        - article [ref=e305]:
+          - generic [ref=e306]: "04"
+          - generic [ref=e307]: Beyond the screen
+          - heading "VR GAMING" [level=3] [ref=e308]
+          - generic [ref=e309]:
+            - strong [ref=e310]: ₹120
+            - generic [ref=e311]: / hour
+          - button "BOOK THIS SETUP" [ref=e312] [cursor=pointer]
+    - generic [ref=e317]:
+      - generic "WHY GAMERS NEST?" [ref=e318]:
+        - generic [ref=e319]:
+          - generic [ref=e320]: THE DIFFERENCE
+          - heading "WHY GAMERS NEST?" [level=2] [ref=e322]
+      - generic [ref=e323]:
+        - article [ref=e324]:
+          - generic [ref=e325]: "01"
+          - heading "PLAY WITH YOUR SQUAD" [level=3] [ref=e331]
+          - paragraph [ref=e332]: Bring your friends and compete together.
+        - article [ref=e333]:
+          - generic [ref=e334]: "02"
+          - heading "MULTIPLE GAMING EXPERIENCES" [level=3] [ref=e337]
+          - paragraph [ref=e338]: PS2, PS4, PS5, racing and VR.
+        - article [ref=e339]:
+          - generic [ref=e340]: "03"
+          - heading "BIG-SCREEN GAMING" [level=3] [ref=e343]
+          - paragraph [ref=e344]: Enjoy an immersive gaming environment.
+        - article [ref=e345]:
+          - generic [ref=e346]: "04"
+          - heading "RACING EXPERIENCE" [level=3] [ref=e353]
+          - paragraph [ref=e354]: Get behind the wheel and experience high-speed racing.
+        - article [ref=e355]:
+          - generic [ref=e356]: "05"
+          - heading "VR ADVENTURE" [level=3] [ref=e359]
+          - paragraph [ref=e360]: Step beyond the screen.
+    - generic [ref=e362]:
+      - generic [ref=e363]:
+        - generic "INSIDE THE NEST" [ref=e364]:
+          - generic [ref=e365]:
+            - generic [ref=e366]: REAL PHOTO GALLERY
+            - heading "INSIDE THE NEST" [level=2] [ref=e368]
+            - paragraph [ref=e369]: See where the games happen.
+        - generic [ref=e370]: THE LOUNGE /AS IT IS
+      - generic [ref=e371]:
+        - button "Open Gaming setup inside Gamers Nest" [ref=e372]:
+          - img "Gaming setup inside Gamers Nest" [ref=e373]
+          - generic [ref=e374]: VIEW / 01
+        - button "Open PlayStation gaming area inside Gamers Nest" [ref=e379]:
+          - img "PlayStation gaming area inside Gamers Nest" [ref=e380]
+          - generic [ref=e381]: VIEW / 02
+        - button "Open Gaming lounge interior at Gamers Nest" [ref=e386]:
+          - img "Gaming lounge interior at Gamers Nest" [ref=e387]
+          - generic [ref=e388]: VIEW / 03
+        - button "Open Gaming experience area inside Gamers Nest" [ref=e393]:
+          - img "Gaming experience area inside Gamers Nest" [ref=e394]
+          - generic [ref=e395]: VIEW / 04
+    - generic [ref=e402]:
+      - generic [ref=e403]:
+        - generic "WHAT GAMERS SAY" [ref=e404]:
+          - generic [ref=e405]:
+            - generic [ref=e406]: REAL WORDS / REAL PLAY
+            - heading "WHAT GAMERS SAY" [level=2] [ref=e408]
+            - paragraph [ref=e409]: Real experiences from gamers who visited Gamers Nest.
+        - generic [ref=e410]:
+          - img "5 out of 5 stars" [ref=e412]
+          - strong [ref=e423]: "5.0"
+          - generic [ref=e424]: Loved by gamers in Ayappakkam
+      - generic [ref=e425]:
+        - article [ref=e426]:
+          - generic [ref=e427]:
+            - generic [aria-hidden] [ref=e428]: AS
+            - generic [ref=e429]:
+              - heading "Alwin Samson" [level=3] [ref=e430]
+              - time [ref=e431]: 5 months ago
+          - img "5 out of 5 stars" [ref=e436]
+          - paragraph [ref=e447]: Great gaming experience with smooth playstation setup. Perfect place to chill and play with friends 😍
+          - generic [ref=e448]: GOOGLE CUSTOMER REVIEW
+        - article [ref=e452]:
+          - generic [ref=e453]:
+            - generic [aria-hidden] [ref=e454]: MM
+            - generic [ref=e455]:
+              - heading "Mathi M" [level=3] [ref=e456]
+              - time [ref=e457]: 4 months ago
+          - img "5 out of 5 stars" [ref=e462]
+          - paragraph [ref=e473]: Cool place for all latest games. Explore the games with please environment.
+          - generic [ref=e474]: GOOGLE CUSTOMER REVIEW
+        - article [ref=e478]:
+          - generic [ref=e479]:
+            - generic [aria-hidden] [ref=e480]: E7
+            - generic [ref=e481]:
+              - heading "Elangaroshni07" [level=3] [ref=e482]
+              - time [ref=e483]: 5 months ago
+          - img "5 out of 5 stars" [ref=e488]
+          - paragraph [ref=e499]: We had a great experience, good ambience, best place to hangout with friends and family for better gaming experience.
+          - generic [ref=e500]: GOOGLE CUSTOMER REVIEW
+        - article [ref=e504]:
+          - generic [ref=e505]:
+            - generic [aria-hidden] [ref=e506]: RR
+            - generic [ref=e507]:
+              - heading "Ramesh r" [level=3] [ref=e508]
+              - time [ref=e509]: 3 months ago
+          - img "5 out of 5 stars" [ref=e514]
+          - paragraph [ref=e525]: Very fun to play and clean and snacks with no (extra charges)
+          - generic [ref=e526]: GOOGLE CUSTOMER REVIEW
+    - generic [ref=e531]:
+      - generic [ref=e532]:
+        - generic "READY TO PLAY?" [ref=e533]:
+          - generic [ref=e534]:
+            - generic [ref=e535]: MAKE IT YOURS
+            - heading "READY TO PLAY?" [level=2] [ref=e537]
+            - paragraph [ref=e538]: Choose your experience and send us your booking request.
+        - generic [ref=e539]:
+          - link "CHAT ON WHATSAPP" [ref=e540] [cursor=pointer]:
+            - /url: https://wa.me/919159588666?text=Hi%20Gamers%20Nest!%20I%20would%20like%20to%20enquire%20about%20a%20gaming%20session.
+          - paragraph [ref=e543]: Prefer to message? We will help you find your setup.
+        - generic "Booking steps" [ref=e544]:
+          - generic [ref=e545]:
+            - strong [ref=e546]: "01"
+            - text: PICK A SETUP
+          - generic [ref=e547]:
+            - strong [ref=e548]: "02"
+            - text: CHOOSE A TIME
+          - generic [ref=e549]:
+            - strong [ref=e550]: "03"
+            - text: SEND A REQUEST
+      - generic [ref=e552]:
+        - generic [ref=e553]:
+          - generic [ref=e554]: BOOK YOUR GAMING SESSION
+          - generic [ref=e555]: REQUEST / 01
+        - paragraph [ref=e556]: Tell us a little about your visit. We will get back to confirm availability.
+        - generic [ref=e557]:
+          - generic [ref=e558]:
+            - generic [ref=e559]: "01"
+            - generic [ref=e560]:
+              - strong [ref=e561]: YOUR DETAILS
+              - generic [ref=e562]: How can we reach you?
+          - generic [ref=e563]:
+            - generic [ref=e564]:
+              - generic [ref=e565]: FULL NAME *
+              - textbox "FULL NAME *" [ref=e566]:
+                - /placeholder: Your name
+            - generic [ref=e567]:
+              - generic [ref=e568]: PHONE / WHATSAPP NUMBER *
+              - textbox "PHONE / WHATSAPP NUMBER *" [ref=e569]:
+                - /placeholder: +91 91595 88666
+        - generic [ref=e570]:
+          - generic [ref=e571]:
+            - generic [ref=e572]: "02"
+            - generic [ref=e573]:
+              - strong [ref=e574]: YOUR SESSION
+              - generic [ref=e575]: Choose a preferred setup, date and time.
+          - generic [ref=e576]:
+            - generic [ref=e577]:
+              - generic [ref=e578]: EXPERIENCE *
+              - combobox "EXPERIENCE *" [ref=e579]:
+                - option "Select an experience" [disabled] [selected]
+                - option "PS2"
+                - option "PS4"
+                - option "PS5"
+                - option "RACING SIMULATOR"
+                - option "VR GAMING"
+            - generic [ref=e580]:
+              - generic [ref=e581]: NUMBER OF PLAYERS *
+              - spinbutton "NUMBER OF PLAYERS *" [ref=e582]
+            - generic [ref=e583]:
+              - generic [ref=e584]: PREFERRED DATE *
+              - textbox "PREFERRED DATE *" [ref=e585]
+            - generic [ref=e586]:
+              - generic [ref=e587]: PREFERRED TIME *
+              - textbox "PREFERRED TIME *" [ref=e588]
+        - generic [ref=e589]:
+          - generic [ref=e590]:
+            - generic [ref=e591]: "03"
+            - generic [ref=e592]:
+              - strong [ref=e593]: MAKE IT YOURS
+              - generic [ref=e594]: Optional details help us prepare.
+          - generic [ref=e595]:
+            - generic [ref=e596]:
+              - generic [ref=e597]: GAME PREFERENCE
+              - textbox "GAME PREFERENCE" [ref=e598]:
+                - /placeholder: Tell us what you want to play
+            - generic [ref=e599]:
+              - generic [ref=e600]: MESSAGE
+              - textbox "MESSAGE" [ref=e601]:
+                - /placeholder: Anything we should know?
+        - generic [ref=e602]:
+          - paragraph [ref=e603]: "* Required fields. Sending a request does not automatically confirm a slot."
+          - button "REQUEST BOOKING" [ref=e604] [cursor=pointer]
+    - generic [ref=e609]:
+      - generic [ref=e610]:
+        - img "Exterior location photo for Gamers Nest in Ayappakkam"
+        - generic [ref=e611]: FIND THE NEST / 01
+      - generic [ref=e612]:
+        - generic "FIND THE NEST" [ref=e613]:
+          - generic [ref=e614]:
+            - generic [ref=e615]: AYAPPAKKAM / CHENNAI
+            - heading "FIND THE NEST" [level=2] [ref=e617]
+            - paragraph [ref=e618]: Your gaming zone in Ayappakkam.
+        - generic [ref=e619]:
+          - strong [ref=e620]: GAMERS NEST
+          - generic [ref=e621]: E-Gaming Lounge
+          - paragraph [ref=e622]: Shop No. 2, First Floor,MIG No. 2165,TNHB, 4th Main Road,Ayappakkam,Chennai – 600077
+        - generic [ref=e623]:
+          - link "+91 91595 88666" [ref=e624] [cursor=pointer]:
+            - /url: tel:+919159588866
+          - link "gamersnest.chennai@gmail.com" [ref=e627] [cursor=pointer]:
+            - /url: mailto:gamersnest.chennai@gmail.com
+          - generic [ref=e631]: 11:00 AM – 11:00 PM
+        - generic [ref=e635]:
+          - link "GET DIRECTIONS" [ref=e636] [cursor=pointer]:
+            - /url: https://www.google.com/maps/search/?api=1&query=Gamers%20Nest%2C%20Shop%20No.%202%2C%20First%20Floor%2C%20MIG%20No.%202165%2C%20TNHB%2C%204th%20Main%20Road%2C%20Ayappakkam%2C%20Chennai%20600077
+          - link "CALL NOW" [ref=e640] [cursor=pointer]:
+            - /url: tel:+919159588866
+          - link "WHATSAPP" [ref=e643] [cursor=pointer]:
+            - /url: https://wa.me/919159588666?text=Hi%20Gamers%20Nest!%20I%20would%20like%20to%20enquire%20about%20a%20gaming%20session.
+    - generic [ref=e647]:
+      - generic [ref=e648]:
+        - generic [ref=e649]: SOCIAL / @GAMERSNEST.CHENNAI
+        - heading "FOLLOW THE NEST." [level=2] [ref=e651]: FOLLOWTHE NEST.
+        - paragraph [ref=e652]: Gaming nights. New games. New challenges.
+      - link "FOLLOW ON INSTAGRAM" [ref=e653] [cursor=pointer]:
+        - /url: https://www.instagram.com/gamersnest.chennai/
+  - contentinfo [ref=e662]:
+    - generic [ref=e663]:
+      - generic [ref=e664]:
+        - link [ref=e665] [cursor=pointer]:
+          - /url: "#home"
+          - generic [ref=e666]:
+            - strong [ref=e667]: GAMERS
+            - emphasis [ref=e668]: NEST
+        - paragraph [ref=e669]: Premium E-Gaming LoungeAyappakkam, Chennai
+      - generic [ref=e670]:
+        - generic [ref=e671]: EXPLORE
+        - link "Experiences" [ref=e672] [cursor=pointer]:
+          - /url: "#experiences"
+        - link "Games" [ref=e673] [cursor=pointer]:
+          - /url: "#games"
+        - link "Pricing" [ref=e674] [cursor=pointer]:
+          - /url: "#pricing"
+        - link "Gallery" [ref=e675] [cursor=pointer]:
+          - /url: "#gallery"
+      - generic [ref=e676]:
+        - generic [ref=e677]: CONNECT
+        - link "Reviews" [ref=e678] [cursor=pointer]:
+          - /url: "#reviews"
+        - link "Location" [ref=e679] [cursor=pointer]:
+          - /url: "#location"
+        - link "Book Now" [ref=e680] [cursor=pointer]:
+          - /url: "#book"
+        - link "Instagram" [ref=e681] [cursor=pointer]:
+          - /url: https://www.instagram.com/gamersnest.chennai/
+      - generic [ref=e682]:
+        - generic [ref=e683]: CONTACT
+        - link "+91 91595 88666" [ref=e684] [cursor=pointer]:
+          - /url: tel:+919159588866
+        - link "gamersnest.chennai@gmail.com" [ref=e685] [cursor=pointer]:
+          - /url: mailto:gamersnest.chennai@gmail.com
+        - generic [ref=e686]: 11:00 AM – 11:00 PM
+    - generic [ref=e687]:
+      - generic [ref=e688]: © 2026 GAMERS NEST
+      - generic [ref=e689]: PREMIUM E-GAMING LOUNGE / AYAPPAKKAM
+      - button "READY TO PLAY?" [ref=e690] [cursor=pointer]
+  - link "Chat with Gamers Nest on WhatsApp" [ref=e694] [cursor=pointer]:
+    - /url: https://wa.me/919159588666?text=Hi%20Gamers%20Nest!%20I%20would%20like%20to%20enquire%20about%20a%20gaming%20session.

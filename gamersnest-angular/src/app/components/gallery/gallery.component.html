@@ -1,0 +1,29 @@
+<section id="gallery" class="gallery-section section-pad shell-width">
+  <div class="section-heading-row">
+    <app-section-label
+      eyebrow="REAL PHOTO GALLERY"
+      title="INSIDE THE NEST"
+      copy="See where the games happen."
+    ></app-section-label>
+    <span class="gallery-caption">THE LOUNGE /<br />AS IT IS</span>
+  </div>
+  <div class="gallery-grid">
+    @for (item of content.galleryItems; track item.src; let i = $index) {
+      <button class="gallery-item" [class]="item.size" (click)="open(i)" [attr.aria-label]="'Open ' + item.alt">
+        <img [src]="item.src" [alt]="item.alt" loading="lazy" />
+        <span class="gallery-overlay">
+          <span>VIEW / 0{{ i + 1 }}</span><svg lucideArrowUpRight [size]="16"></svg>
+        </span>
+      </button>
+    }
+  </div>
+</section>
+
+@if (selectedGallery() !== null) {
+  <app-lightbox
+    [items]="content.galleryItems"
+    [index]="selectedGallery()!"
+    (closed)="close()"
+    (indexChange)="setIndex($event)"
+  ></app-lightbox>
+}

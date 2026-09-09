@@ -1,0 +1,32 @@
+<section id="reviews" class="reviews-section section-pad" [style.backgroundImage]="backgroundImage">
+  <div class="shell-width">
+    <div class="reviews-intro">
+      <app-section-label
+        eyebrow="REAL WORDS / REAL PLAY"
+        title="WHAT GAMERS SAY"
+        copy="Real experiences from gamers who visited Gamers Nest."
+      ></app-section-label>
+      <div class="rating-highlight">
+        <app-stars></app-stars>
+        <strong>5.0</strong>
+        <span>Loved by gamers in Ayappakkam</span>
+      </div>
+    </div>
+    <div class="reviews-grid">
+      @for (review of content.reviews; track review.name; let i = $index) {
+        <article class="review-card reveal-up" [style.animationDelay]="(i * 70) + 'ms'">
+          <div class="review-card-top">
+            <div class="initials-avatar" aria-hidden="true">{{ review.initials }}</div>
+            <div><h3>{{ review.name }}</h3><time>{{ review.time }}</time></div>
+            <svg lucideQuote [size]="24" class="quote-mark"></svg>
+          </div>
+          <app-stars></app-stars>
+          <p>{{ review.text }}</p>
+          <div class="review-card-foot">
+            <span>GOOGLE CUSTOMER REVIEW</span><svg lucideCheck [size]="14"></svg>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

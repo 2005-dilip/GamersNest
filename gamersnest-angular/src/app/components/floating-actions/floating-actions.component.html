@@ -1,0 +1,14 @@
+<a
+  class="floating-whatsapp"
+  [href]="content.whatsappLink"
+  target="_blank"
+  rel="noreferrer"
+  aria-label="Chat with Gamers Nest on WhatsApp"
+>
+  <svg lucideMessageCircle [size]="21"></svg>
+</a>
+<div class="mobile-bottom-bar">
+  <button (click)="chooseExperience('')"><svg lucideCalendarDays [size]="16"></svg> BOOK NOW</button>
+  <a [href]="content.whatsappLink" target="_blank" rel="noreferrer"><svg lucideMessageCircle [size]="16"></svg> WHATSAPP</a>
+  <a [href]="content.phoneHref"><svg lucidePhone [size]="16"></svg> CALL</a>
+</div>

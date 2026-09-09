@@ -1,0 +1,16 @@
+.reasons-section { padding-bottom: 116px; }
+.reasons-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 11px; margin-top: 62px; }
+.reason-card { position: relative; min-height: 205px; padding: 42px 22px 22px; border-top: 1px solid rgba(255,255,255,.2); background: linear-gradient(150deg, rgba(255,255,255,.035), transparent); }
+.reason-index { position: absolute; top: 20px; left: 21px; color: rgba(255,255,255,.55); font-family: var(--font-display); font-size: 10px; letter-spacing: .15em; }
+.reason-card svg { color: #49e8ff; }
+.reason-card h3 { margin: 27px 0 10px; color: #f3f6f3; font-family: var(--font-display); font-size: 14px; letter-spacing: -.03em; line-height: 1.05; }
+.reason-card p { margin: 0; color: #95a1a2; font-size: 12px; line-height: 1.45; }
+
+@media (max-width: 1050px) {
+  .reasons-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .reasons-grid { display: flex; gap: 11px; overflow-x: auto; margin-top: 43px; padding-bottom: 8px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .reason-card { min-width: 72vw; scroll-snap-align: start; }
+}

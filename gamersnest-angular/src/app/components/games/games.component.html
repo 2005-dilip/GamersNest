@@ -1,0 +1,35 @@
+<section id="games" class="games-section section-pad shell-width">
+  <div class="section-heading-row">
+    <app-section-label
+      eyebrow="GAME LIBRARY"
+      title="CHOOSE YOUR BATTLE"
+      copy="A selection of games and experiences available at the lounge."
+    ></app-section-label>
+    <div class="library-note">SELECT YOUR<br /><span>PLAYLIST</span></div>
+  </div>
+  <div class="category-row" role="tablist" aria-label="Game categories">
+    @for (category of content.categories; track category) {
+      <button
+        role="tab"
+        [attr.aria-selected]="activeCategory() === category"
+        [class.category-active]="activeCategory() === category"
+        (click)="setCategory(category)"
+      >
+        {{ category }}
+      </button>
+    }
+  </div>
+  <div class="games-grid">
+    @for (game of visibleGames(); track game.title; let i = $index) {
+      <article class="game-card reveal-up" [style.animationDelay]="(i * 35) + 'ms'">
+        <img [src]="game.photo" alt="" loading="lazy" />
+        <div class="game-card-overlay"></div>
+        <div class="game-card-content">
+          <span>{{ game.genre }}</span>
+          <h3>{{ game.title }}</h3>
+          <svg lucideArrowUpRight [size]="18"></svg>
+        </div>
+      </article>
+    }
+  </div>
+</section>

@@ -1,0 +1,92 @@
+<section id="book" class="booking-section section-pad shell-width">
+  <div class="booking-intro">
+    <app-section-label
+      eyebrow="MAKE IT YOURS"
+      title="READY TO PLAY?"
+      copy="Choose your experience and send us your booking request."
+    ></app-section-label>
+    <div class="booking-contact">
+      <a [href]="content.whatsappLink" target="_blank" rel="noreferrer" class="button button-primary">
+        <svg lucideMessageCircle [size]="17"></svg> CHAT ON WHATSAPP
+      </a>
+      <p>Prefer to message? We will help you find your setup.</p>
+    </div>
+    <div class="booking-steps" aria-label="Booking steps">
+      <span><strong>01</strong> PICK A SETUP</span>
+      <span><strong>02</strong> CHOOSE A TIME</span>
+      <span><strong>03</strong> SEND A REQUEST</span>
+    </div>
+  </div>
+  <div class="booking-panel">
+    @if (submitted()) {
+      <div class="confirmation-state" aria-live="polite">
+        <span class="confirmation-icon"><svg lucideCheck [size]="27"></svg></span>
+        <span class="eyebrow"><span class="eyebrow-dot"></span> REQUEST RECEIVED</span>
+        <h3>Your booking request has been received.</h3>
+        <p>Gamers Nest will contact you to confirm your session.</p>
+        <div class="confirmation-actions">
+          <a [href]="content.whatsappLink" target="_blank" rel="noreferrer" class="button button-primary">
+            <svg lucideMessageCircle [size]="16"></svg> CHAT ON WHATSAPP
+          </a>
+          <button class="text-link" (click)="reset()">
+            SEND ANOTHER REQUEST <svg lucideArrowUpRight [size]="15"></svg>
+          </button>
+        </div>
+      </div>
+    } @else {
+      <form (submit)="onSubmit($event)">
+        <div class="form-header"><span>BOOK YOUR GAMING SESSION</span><span>REQUEST / 01</span></div>
+        <p class="form-intro">Tell us a little about your visit. We will get back to confirm availability.</p>
+        <div class="form-section">
+          <div class="form-section-header">
+            <span class="form-step">01</span>
+            <div><strong>YOUR DETAILS</strong><small>How can we reach you?</small></div>
+          </div>
+          <div class="form-grid">
+            <label><span>FULL NAME <b>*</b></span><input id="booking-name" name="name" autocomplete="name" required placeholder="Your name" /></label>
+            <label><span>PHONE / WHATSAPP NUMBER <b>*</b></span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+91 91595 88666" /></label>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-header">
+            <span class="form-step">02</span>
+            <div><strong>YOUR SESSION</strong><small>Choose a preferred setup, date and time.</small></div>
+          </div>
+          <div class="form-grid">
+            <label>
+              <span>EXPERIENCE <b>*</b></span>
+              <select
+                name="experience"
+                [value]="interaction.selectedExperience()"
+                (change)="onExperienceChange($any($event.target).value)"
+                required
+              >
+                <option value="" disabled>Select an experience</option>
+                @for (experience of content.bookingExperiences; track experience) {
+                  <option [value]="experience">{{ experience }}</option>
+                }
+              </select>
+            </label>
+            <label><span>NUMBER OF PLAYERS <b>*</b></span><input name="players" type="number" min="1" max="20" inputmode="numeric" required placeholder="1" /></label>
+            <label><span>PREFERRED DATE <b>*</b></span><input name="date" type="date" [min]="today" required /></label>
+            <label><span>PREFERRED TIME <b>*</b></span><input name="time" type="time" required /></label>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-header">
+            <span class="form-step">03</span>
+            <div><strong>MAKE IT YOURS</strong><small>Optional details help us prepare.</small></div>
+          </div>
+          <div class="form-grid">
+            <label class="form-wide"><span>GAME PREFERENCE</span><input name="game" placeholder="Tell us what you want to play" /></label>
+            <label class="form-wide"><span>MESSAGE</span><textarea name="message" rows="3" placeholder="Anything we should know?"></textarea></label>
+          </div>
+        </div>
+        <div class="form-footer">
+          <p><b>*</b> Required fields. Sending a request does not automatically confirm a slot.</p>
+          <button class="button button-primary" type="submit">REQUEST BOOKING <svg lucideArrowUpRight [size]="17"></svg></button>
+        </div>
+      </form>
+    }
+  </div>
+</section>
