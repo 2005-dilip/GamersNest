@@ -329,7 +329,7 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
 
   return (
     <div
-      className="fixed inset-0 z-[120] flex items-start justify-center overflow-y-auto bg-black/80 backdrop-blur-sm p-4 sm:p-8"
+      className="fixed inset-0 z-[120] flex items-start justify-center overflow-y-auto bg-black/80 backdrop-blur-sm p-2 sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label="Walk-in slot checker"
@@ -340,13 +340,13 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800 bg-[#0f1117]">
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-800 bg-[#0f1117]">
           <div className="flex items-center gap-3">
             <span className="grid place-items-center h-10 w-10 rounded-xl bg-[#00f2fe]/15 border border-[#00f2fe]/30 text-[#00f2fe]">
               <SearchIcon className="h-5 w-5" />
             </span>
             <div>
-              <h2 className="text-lg font-extrabold text-white flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
                 See for Slot &amp; Walk-In Booking
                 <Sparkles className="h-4 w-4 text-[#c4ff3d]" />
               </h2>
@@ -362,15 +362,15 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
           </button>
         </div>
 
-        <div className="p-5 sm:p-6 space-y-6 max-h-[85vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 space-y-6 max-h-[85vh] overflow-y-auto">
           {/* Request inputs */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-[#0a0b0e] p-4 rounded-xl border border-slate-800">
-            <label className="col-span-2 sm:col-span-1 flex flex-col gap-1.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 bg-[#0a0b0e] p-3 sm:p-4 rounded-xl border border-slate-800">
+            <label className="flex flex-col gap-1.5">
               <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Experience</span>
               <select
                 value={experience}
                 onChange={(e) => setExperience(e.target.value as Experience)}
-                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
+                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
               >
                 {EXPERIENCES.map((exp) => (
                   <option key={exp} value={exp}>{INVENTORY[exp].label}</option>
@@ -378,14 +378,14 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
               </select>
             </label>
 
-            <label className="col-span-2 sm:col-span-1 flex flex-col gap-1.5">
+            <label className="flex flex-col gap-1.5">
               <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Date</span>
               <input
                 type="date"
                 value={date}
                 min={today}
                 onChange={(e) => setDate(e.target.value)}
-                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
+                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
               />
             </label>
 
@@ -394,7 +394,7 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
               <select
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
+                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
               >
                 <option value="">Select</option>
                 {startSlots.map((s) => (
@@ -409,7 +409,7 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 disabled={!startTime}
-                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe] disabled:opacity-40 [color-scheme:dark]"
+                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe] disabled:opacity-40 [color-scheme:dark]"
               >
                 <option value="">Select</option>
                 {endSlots.map((s) => (
@@ -418,12 +418,12 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
               </select>
             </label>
 
-            <label className="flex flex-col gap-1.5">
+            <label className="flex flex-col gap-1.5 sm:col-span-2 lg:col-span-1">
               <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Players</span>
               <select
                 value={players}
                 onChange={(e) => setPlayers(Number(e.target.value))}
-                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
+                className="px-3 py-2 bg-[#12151e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
               >
                 {Array.from({ length: Math.max(1, maxPlayers) }, (_, i) => i + 1).map((n) => (
                   <option key={n} value={n}>{n} {n > 1 ? "players" : "player"}</option>
@@ -535,7 +535,7 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Walk-in customer name"
-                    className="px-3.5 py-2 bg-[#0a0b0e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe]"
+                    className="px-3.5 py-2 bg-[#0a0b0e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe]"
                   />
                 </label>
 
@@ -546,7 +546,7 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
                     onChange={(e) => setPhone(e.target.value)}
                     inputMode="tel"
                     placeholder="Phone number"
-                    className="px-3.5 py-2 bg-[#0a0b0e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe]"
+                    className="px-3.5 py-2 bg-[#0a0b0e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe]"
                   />
                 </label>
 
@@ -555,7 +555,7 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
                   <select
                     value={selectedConsoleId}
                     onChange={(e) => setSelectedConsoleId(e.target.value as ConsoleId)}
-                    className="px-3.5 py-2 bg-[#0a0b0e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
+                    className="px-3.5 py-2 bg-[#0a0b0e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe] [color-scheme:dark]"
                   >
                     <option value="">Auto-assign Console</option>
                     {availableConsoles.map((c) => (
@@ -570,7 +570,7 @@ export const WalkInSlotChecker: React.FC<WalkInSlotCheckerProps> = ({ onClose, o
                     value={game}
                     disabled={isSharedSession}
                     onChange={(e) => setGame(e.target.value)}
-                    className="px-3.5 py-2 bg-[#0a0b0e] border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-[#00f2fe] disabled:opacity-60 [color-scheme:dark]"
+                    className="px-3.5 py-2 bg-[#0a0b0e] border border-slate-700 rounded-lg text-base sm:text-xs text-white focus:outline-none focus:border-[#00f2fe] disabled:opacity-60 [color-scheme:dark]"
                   >
                     <option value="">Select Game</option>
                     {PLAYABLE_GAMES.map((g: Game) => (

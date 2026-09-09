@@ -469,7 +469,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .booking-panel { padding: 21px 16px; }
   .form-header { flex-direction: column; gap: 8px; }
   .form-grid { grid-template-columns: 1fr; gap: 15px; }
-  .form-grid input, .form-grid select, .form-grid textarea { font-size: 16px; }
+  input, select, textarea { font-size: 16px !important; }
   .form-grid-three { grid-template-columns: 1fr; }
   .form-wide { grid-column: auto; }
   .form-footer { align-items: flex-start; flex-direction: column; }

@@ -86,7 +86,7 @@ export const AdminLogin: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@gamersnest.com"
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#0a0b0e] border border-slate-700/80 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#00f2fe] focus:ring-1 focus:ring-[#00f2fe] transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#0a0b0e] border border-slate-700/80 rounded-xl text-base sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#00f2fe] focus:ring-1 focus:ring-[#00f2fe] transition-all"
                   required
                 />
               </div>
@@ -105,7 +105,7 @@ export const AdminLogin: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#0a0b0e] border border-slate-700/80 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#00f2fe] focus:ring-1 focus:ring-[#00f2fe] transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#0a0b0e] border border-slate-700/80 rounded-xl text-base sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#00f2fe] focus:ring-1 focus:ring-[#00f2fe] transition-all"
                   required
                 />
               </div>

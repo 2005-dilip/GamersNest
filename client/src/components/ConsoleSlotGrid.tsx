@@ -209,7 +209,7 @@ export const ConsoleSlotGrid: React.FC<ConsoleSlotGridProps> = ({
                       className={`p-2.5 rounded-xl border text-left flex flex-col justify-between transition-all ${borderStyle}`}
                     >
                       <div className="flex items-center justify-between w-full">
-                        <span className="text-xs font-bold text-white font-mono">
+                        <span className="text-[11px] sm:text-xs font-bold text-white font-mono truncate">
                           {slot.label} – {formatTime12h(endSlotValue)}
                         </span>
                       </div>

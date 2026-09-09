@@ -1062,7 +1062,7 @@ function Chatbot({ inline = false }) {
             border: "1px solid rgba(0, 242, 254, 0.25)",
             background: "#080d19",
             color: "#ffffff",
-            fontSize: "13.5px",
+            fontSize: "16px",
             outline: "none",
             boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.5)"
           }}

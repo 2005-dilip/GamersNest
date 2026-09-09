@@ -86,16 +86,16 @@ export const CardCarousel: React.FC<CarouselProps> = ({
         {showNavigation && (
           <>
             <button
-              className="swiper-prev-btn absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 sm:-translate-x-5 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#090e13]/95 border border-[#00f2fe]/40 text-[#00f2fe] hover:border-[#c4ff3d] hover:text-[#c4ff3d] flex items-center justify-center backdrop-blur-md shadow-xl transition-all hover:scale-110 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+              className="swiper-prev-btn absolute left-1 sm:left-0 top-1/2 -translate-y-1/2 sm:-translate-x-5 z-30 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[#090e13]/95 border border-[#00f2fe]/40 text-[#00f2fe] hover:border-[#c4ff3d] hover:text-[#c4ff3d] flex items-center justify-center backdrop-blur-md shadow-xl transition-all hover:scale-110 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
               aria-label="Previous Setup"
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
             <button
-              className="swiper-next-btn absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 sm:translate-x-5 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#090e13]/95 border border-[#00f2fe]/40 text-[#00f2fe] hover:border-[#c4ff3d] hover:text-[#c4ff3d] flex items-center justify-center backdrop-blur-md shadow-xl transition-all hover:scale-110 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+              className="swiper-next-btn absolute right-1 sm:right-0 top-1/2 -translate-y-1/2 sm:translate-x-5 z-30 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[#090e13]/95 border border-[#00f2fe]/40 text-[#00f2fe] hover:border-[#c4ff3d] hover:text-[#c4ff3d] flex items-center justify-center backdrop-blur-md shadow-xl transition-all hover:scale-110 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
               aria-label="Next Setup"
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
           </>
         )}

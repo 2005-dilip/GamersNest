@@ -136,7 +136,7 @@ export const BookingDetailModal: React.FC<BookingDetailModalProps> = ({
           </div>
 
           {/* Booking Info Grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="bg-[#0a0b0e] p-3.5 rounded-xl border border-slate-800">
               <span className="text-[11px] font-mono text-slate-400 uppercase flex items-center gap-1.5 mb-1">
                 <Gamepad2 className="h-3.5 w-3.5 text-[#00f2fe]" />

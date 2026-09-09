@@ -284,7 +284,7 @@ export const AdminDataManagement: React.FC = () => {
                           value={adminPassword}
                           onChange={(e) => setAdminPassword(e.target.value)}
                           placeholder="Enter your admin password"
-                          className="w-full pl-9 pr-3 py-2 bg-[#0a0b0e] border border-slate-700 rounded-xl text-xs text-white placeholder-slate-600 focus:border-rose-500 focus:outline-none"
+                          className="w-full pl-9 pr-3 py-2 bg-[#0a0b0e] border border-slate-700 rounded-xl text-base sm:text-xs text-white placeholder-slate-600 focus:border-rose-500 focus:outline-none"
                           required
                         />
                         <Lock className="h-4 w-4 text-slate-500 absolute left-3 top-2.5" />
@@ -301,7 +301,7 @@ export const AdminDataManagement: React.FC = () => {
                         value={confirmText}
                         onChange={(e) => setConfirmText(e.target.value)}
                         placeholder={REQUIRED_CONFIRM_TEXT}
-                        className="w-full px-3 py-2 bg-[#0a0b0e] border border-slate-700 rounded-xl text-xs text-white placeholder-slate-600 focus:border-rose-500 focus:outline-none"
+                        className="w-full px-3 py-2 bg-[#0a0b0e] border border-slate-700 rounded-xl text-base sm:text-xs text-white placeholder-slate-600 focus:border-rose-500 focus:outline-none"
                         required
                       />
                     </div>

@@ -74,7 +74,7 @@ export const AdminConnect: React.FC = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search gamer by customer name or phone number..."
-              className="w-full pl-9 pr-4 py-2.5 bg-[#0a0b0e] border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00f2fe]"
+              className="w-full pl-9 pr-4 py-2.5 bg-[#0a0b0e] border border-slate-700/80 rounded-xl text-base sm:text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00f2fe]"
             />
             <Search className="h-4 w-4 text-slate-500 absolute left-3 top-3" />
           </div>

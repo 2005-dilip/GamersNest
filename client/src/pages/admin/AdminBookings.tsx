@@ -224,14 +224,14 @@ export const AdminBookings: React.FC = () => {
         <div className="bg-[#12151e] border border-slate-800 p-4 rounded-2xl space-y-4">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             {/* Search Input */}
-            <form onSubmit={handleSearchSubmit} className="flex-1 min-w-[280px]">
+            <form onSubmit={handleSearchSubmit} className="flex-1 min-w-0 sm:min-w-[280px]">
               <div className="relative">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by customer name or phone number..."
-                  className="w-full pl-9 pr-10 py-2 bg-[#0a0b0e] border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00f2fe]"
+                  className="w-full pl-9 pr-10 py-2 bg-[#0a0b0e] border border-slate-700/80 rounded-xl text-base sm:text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00f2fe]"
                 />
                 <Search className="h-4 w-4 text-slate-500 absolute left-3 top-2.5" />
                 {searchQuery && (
