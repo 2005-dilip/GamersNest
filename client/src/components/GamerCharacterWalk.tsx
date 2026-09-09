@@ -186,8 +186,22 @@ export const GamerCharacterWalk: React.FC<GamerCharacterWalkProps> = ({
     }
   };
 
-  // Badge is visible ONLY when user hovers over character or when entering a new section brief toast
-  const shouldShowBadge = isHovered || toastActive;
+  // On mobile screens, show badge ONLY on click/tap (isHovered), disable auto scroll toast to keep mobile UI clean
+  const isMobileScreen = typeof window !== "undefined" && window.innerWidth < 640;
+  const shouldShowBadge = isHovered || (!isMobileScreen && toastActive);
+
+  // Dynamic speech bubble alignment so text NEVER clips off left or right screen edges
+  const getBadgeAlignmentClass = () => {
+    if (leftPercent < 25) return "left-0 translate-x-0";
+    if (leftPercent > 75) return "right-0 left-auto translate-x-0";
+    return "left-1/2 -translate-x-1/2";
+  };
+
+  const getArrowAlignmentClass = () => {
+    if (leftPercent < 25) return "ml-4";
+    if (leftPercent > 75) return "mr-4 ml-auto";
+    return "mx-auto";
+  };
 
   return (
     <div
@@ -205,32 +219,34 @@ export const GamerCharacterWalk: React.FC<GamerCharacterWalkProps> = ({
         onClick={handleCharacterClick}
         title="Click to interact with GamersNest Gamer!"
       >
-        {/* Smart Unobscured Speech Bubble / Badge (Fades out when scrolling, shows on hover or brief section toast) */}
+        {/* Smart Unobscured Speech Bubble / Badge (Clamped to prevent clipping) */}
         <div
-          className={`absolute -top-14 sm:-top-16 left-1/2 -translate-x-1/2 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap ${
+          className={`absolute -top-14 sm:-top-16 ${getBadgeAlignmentClass()} pointer-events-none transition-all duration-300 z-50 whitespace-nowrap ${
             shouldShowBadge
               ? "opacity-100 scale-100 translate-y-0"
               : "opacity-0 scale-90 translate-y-2"
           }`}
           style={{
-            transform: `translateX(-50%) scaleX(${facingRight ? 1 : -1})`, // Unflip text so speech bubble is always readable
+            transform: leftPercent >= 25 && leftPercent <= 75
+              ? `translateX(-50%) scaleX(${facingRight ? 1 : -1})`
+              : `scaleX(${facingRight ? 1 : -1})`,
           }}
         >
-          <div className="bg-[#0f1117]/95 border border-[#00f2fe]/40 rounded-xl px-3 py-1.5 shadow-xl shadow-[#00f2fe]/20 backdrop-blur-md flex items-center space-x-2">
-            <div className={`p-1 rounded-md bg-gradient-to-r ${sectionInfo.color} text-black font-bold`}>
+          <div className="bg-[#0f1117]/95 border border-[#00f2fe]/40 rounded-xl px-3 py-1.5 shadow-xl shadow-[#00f2fe]/20 backdrop-blur-md flex items-center space-x-2 max-w-[260px] sm:max-w-none">
+            <div className={`p-1 rounded-md bg-gradient-to-r ${sectionInfo.color} text-black font-bold flex-shrink-0`}>
               <SectionIcon className="h-3 w-3" />
             </div>
-            <div className="flex flex-col text-left">
-              <span className="text-[9px] font-mono uppercase tracking-widest text-[#00f2fe]">
+            <div className="flex flex-col text-left overflow-hidden">
+              <span className="text-[9px] font-mono uppercase tracking-widest text-[#00f2fe] truncate">
                 {sectionInfo.tag}
               </span>
-              <span className="text-xs font-bold text-white font-sans">
+              <span className="text-xs font-bold text-white font-sans truncate">
                 {isHovered ? QUOTES[quoteIndex] : sectionInfo.label}
               </span>
             </div>
           </div>
           {/* Speech Bubble Pointer Arrow */}
-          <div className="w-2.5 h-2.5 bg-[#0f1117] border-r border-b border-[#00f2fe]/40 rotate-45 mx-auto -mt-1" />
+          <div className={`w-2.5 h-2.5 bg-[#0f1117] border-r border-b border-[#00f2fe]/40 rotate-45 ${getArrowAlignmentClass()} -mt-1`} />
         </div>
 
         {/* Character Sprite Sheet Render */}
