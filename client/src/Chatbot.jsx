@@ -1100,14 +1100,14 @@ function Chatbot({ inline = false }) {
           animation: gnHudExpand 300ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
           .gn-hud-launcher-wrapper {
-            bottom: max(16px, env(safe-area-inset-bottom));
-            right: 16px;
+            bottom: calc(58px + max(12px, env(safe-area-inset-bottom)));
+            right: 12px;
           }
           .gn-bot-speech-bubble-top {
             padding: 4px 18px 4px 8px;
-            max-width: 240px;
+            max-width: 220px;
           }
           .gn-speech-content-top {
             font-size: 11px;
@@ -1117,13 +1117,13 @@ function Chatbot({ inline = false }) {
             height: 48px;
           }
           .gn-hud-window {
-            bottom: max(12px, env(safe-area-inset-bottom));
-            right: 12px;
-            left: 12px;
-            width: calc(100vw - 24px);
+            bottom: calc(60px + max(8px, env(safe-area-inset-bottom)));
+            right: 10px;
+            left: 10px;
+            width: calc(100vw - 20px);
             max-width: 100vw;
-            height: calc(100dvh - 80px);
-            max-height: calc(100dvh - 80px);
+            height: calc(100dvh - 120px);
+            max-height: calc(100dvh - 120px);
             border-radius: 16px;
           }
           .gn-quick-actions-grid {
@@ -1137,13 +1137,17 @@ function Chatbot({ inline = false }) {
         }
 
         @media (max-width: 380px) {
-          .gn-hud-window {
-            bottom: max(8px, env(safe-area-inset-bottom));
+          .gn-hud-launcher-wrapper {
+            bottom: calc(56px + max(8px, env(safe-area-inset-bottom)));
             right: 8px;
-            left: 8px;
-            width: calc(100vw - 16px);
-            height: calc(100dvh - 65px);
-            max-height: calc(100dvh - 65px);
+          }
+          .gn-hud-window {
+            bottom: calc(58px + max(6px, env(safe-area-inset-bottom)));
+            right: 6px;
+            left: 6px;
+            width: calc(100vw - 12px);
+            height: calc(100dvh - 110px);
+            max-height: calc(100dvh - 110px);
           }
           .gn-quick-actions-grid {
             grid-template-columns: 1fr !important;
