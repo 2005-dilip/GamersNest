@@ -126,15 +126,30 @@ const GROQ_MODELS = [
 
 function parseInlineMarkdown(text) {
   if (!text) return "";
-  const cleaned = text.replace(/\*{3,}/g, "**");
-  const parts = cleaned.split(/(\*\*[^*]+\*\*)/g);
+  // 1. Fix mismatched asterisks like *Pro Tip:** or ***Pro Tip:** or **Pro Tip:*
+  let cleaned = text
+    .replace(/\*{3,}/g, "**")
+    .replace(/^\*\s*(\*\*[^*]+\*\*)/g, "$1")  // '* **text**' -> '**text**'
+    .replace(/^\*([^\s*]+:\*\*)/g, "**$1")    // '*Pro Tip:**' -> '**Pro Tip:**'
+    .replace(/^\*([^\s*]+\*\*)/g, "**$1");    // '*Pro Tip:**' -> '**Pro Tip:**'
+
+  // 2. Tokenize bold **text** and italic *text*
+  const parts = cleaned.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
   return parts.map((part, pIdx) => {
-    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+    if (part.startsWith("**") && part.endsWith("**") && part.length >= 4) {
       const boldText = part.slice(2, -2);
       return (
         <strong key={pIdx} style={{ color: "#00f2fe", fontWeight: 700 }}>
           {boldText}
         </strong>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*") && part.length >= 3) {
+      const italicText = part.slice(1, -1);
+      return (
+        <em key={pIdx} style={{ color: "#c4ff3d", fontStyle: "italic" }}>
+          {italicText}
+        </em>
       );
     }
     return part;
@@ -228,8 +243,21 @@ function FormattedMessage({ content, prevUserMsg, onActionClick }) {
       const headerText = trimmed.replace(/^#+\s*/, "");
       blocks.push({ type: "header", text: headerText });
     } else if (/^[\*\-•]\s*/.test(trimmed)) {
-      const bulletText = trimmed.replace(/^[\*\-•]\s*/, "");
-      blocks.push({ type: "bullet", text: bulletText });
+      let bulletText = trimmed.replace(/^[\*\-•]\s*/, "").trim();
+      
+      // Clean leading stray asterisk like *Pro Tip:** -> **Pro Tip:**
+      if (bulletText.startsWith("*") && !bulletText.startsWith("**")) {
+        bulletText = bulletText.replace(/^\*\s*/, "");
+      }
+
+      // Check if this bullet is actually an ALL-CAPS section header like "* **PS5 GAMING RATES**"
+      const isHeaderBullet = /^\*\*([A-Z0-9\s&—\-\/]{3,})\*\*\s*$/.test(bulletText);
+      if (isHeaderBullet) {
+        const headerTitle = bulletText.replace(/\*\*/g, "");
+        blocks.push({ type: "header", text: headerTitle });
+      } else {
+        blocks.push({ type: "bullet", text: bulletText });
+      }
     } else {
       blocks.push({ type: "paragraph", text: trimmed });
     }
