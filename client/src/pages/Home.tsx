@@ -526,7 +526,7 @@ export default function Home() {
         aria-hidden="true"
       />
       <GamerCharacterWalk />
-      <header className={`site-nav ${scrolled ? "site-nav-scrolled" : ""}`}>
+      <header className={`site-nav ${scrolled ? "site-nav-scrolled" : ""} ${mobileOpen ? "site-nav-mobile-open" : ""}`}>
 
         <a href="#home" className="brand-lockup" onClick={() => scrollToId("home")} aria-label="Gamers Nest home">
           <img src={logoMark} alt="" className="brand-mark" />
