@@ -1,8 +1,0 @@
-.intro-section { display: grid; grid-template-columns: .9fr 1.1fr; gap: 10vw; align-items: center; }
-.intro-lead { max-width: 480px; margin: 32px 0 28px; color: #e3e8e5; font-size: clamp(1.35rem, 2vw, 2rem); line-height: 1.26; letter-spacing: -.035em; }
-.intro-photo { min-height: 480px; }
-
-@media (max-width: 760px) {
-  .intro-section { grid-template-columns: 1fr; gap: 42px; }
-  .intro-photo { min-height: 330px; }
-}
