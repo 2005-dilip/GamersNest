@@ -77,7 +77,7 @@ const experiences = [
     title: "PS2 GAMING",
     formValue: "PS2",
     description: "Relive classic gaming experiences with your friends.",
-    price: "₹60 / hour",
+    price: "From ₹70 / player / hour",
     photo: "/images/games/ps2.webp",
     tint: "cyan",
   },
@@ -85,7 +85,7 @@ const experiences = [
     title: "PS4 GAMING",
     formValue: "PS4",
     description: "Jump into your favourite competitive and action titles.",
-    price: "From ₹70 / player / hour",
+    price: "From ₹90 / player / hour",
     photo: "/images/games/ps4.webp",
     tint: "lime",
   },
@@ -93,7 +93,7 @@ const experiences = [
     title: "PS5 GAMING",
     formValue: "PS5",
     description: "Experience modern gaming on a premium setup.",
-    price: "From ₹70 / player / hour",
+    price: "From ₹90 / player / hour",
     photo: "/images/games/ps5.webp",
     tint: "cyan",
   },
@@ -101,7 +101,7 @@ const experiences = [
     title: "STEERING SIMULATOR",
     formValue: "Steering simulator 1",
     description: "Get behind the wheel and experience high-speed racing.",
-    price: "₹120 / hour",
+    price: "₹150 / hour",
     photo: "/images/games/steering.webp",
     tint: "lime",
   },
@@ -109,7 +109,7 @@ const experiences = [
     title: "VR GAMING",
     formValue: "VR GAMING",
     description: "Step beyond the screen and into an immersive virtual world.",
-    price: "₹120 / hour",
+    price: "₹100 / 30 mins",
     photo: "/images/games/vr.webp",
     tint: "cyan",
   },
@@ -118,20 +118,20 @@ const experiences = [
 const games = PLAYABLE_GAMES;
 
 const pricing = [
-  { title: "PS2", accent: "Classic", price: "₹60", detail: "/ hour", note: "Retro classics on the big screen — perfect for a casual throwback session." },
+  { title: "PS2", accent: "Classic", price: "₹80", detail: "/ hour", note: "Retro classics on the big screen — per-player rates drop to ₹70/hr for multiplayer." },
   {
     title: "PS4 & PS5",
     accent: "Squad play",
     note: "Bring the crew — per-player rates drop the more of you play together.",
     tiers: [
       ["1 Player", "₹100 / hour"],
-      ["2 Players", "₹80 / player / hour"],
-      ["3 Players", "₹70 / player / hour"],
-      ["4 Players", "₹70 / player / hour"],
+      ["2 Players", "₹90 / player / hour"],
+      ["3 Players", "₹90 / player / hour"],
+      ["4 Players", "₹90 / player / hour"],
     ],
   },
-  { title: "Steering simulator 1", accent: "Take the wheel", price: "₹120", detail: "/ hour", note: "Full racing rig with wheel and pedals for high-speed track battles." },
-  { title: "VR GAMING", accent: "Beyond the screen", price: "₹120", detail: "/ hour", note: "Step inside the game with a fully immersive virtual-reality setup." },
+  { title: "Steering simulator 1", accent: "Take the wheel", price: "₹150", detail: "/ hour", note: "Full racing rig with wheel and pedals for high-speed track battles." },
+  { title: "VR GAMING", accent: "Beyond the screen", price: "₹100", detail: "/ 30 mins", note: "Step inside the game with a fully immersive virtual-reality setup (₹200/hr)." },
 ];
 
 const reasons = [
@@ -483,14 +483,33 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [selectedGallery]);
 
+  // Lock body scroll when mobile navigation drawer is open to prevent background scrolling bugs
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
+  }, [mobileOpen]);
+
   const visibleGames = useMemo(
     () => (activeCategory === "ALL" ? games : games.filter((game) => game.category === activeCategory)),
     [activeCategory],
   );
 
   const scrollToId = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setMobileOpen(false);
+    document.body.style.overflow = "";
+    document.body.style.touchAction = "";
+    window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
   };
 
   const chooseExperience = (experience: string) => {
@@ -509,7 +528,7 @@ export default function Home() {
       <GamerCharacterWalk />
       <header className={`site-nav ${scrolled ? "site-nav-scrolled" : ""}`}>
 
-        <a href="#home" className="brand-lockup" onClick={() => setMobileOpen(false)} aria-label="Gamers Nest home">
+        <a href="#home" className="brand-lockup" onClick={() => scrollToId("home")} aria-label="Gamers Nest home">
           <img src={logoMark} alt="" className="brand-mark" />
           <span className="brand-wordmark"><strong>GAMERS</strong><em>NEST</em></span>
         </a>
@@ -518,7 +537,16 @@ export default function Home() {
             ["HOME", "home"], ["CONSOLES", "experiences"], ["GAMES", "games"], ["PRICING", "pricing"],
             ["GALLERY", "gallery"], ["REVIEWS", "reviews"], ["LOCATION", "location"],
           ].map(([label, id]) => (
-            <a key={id} href={`#${id}`} onClick={() => setMobileOpen(false)}>{label}</a>
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToId(id);
+              }}
+            >
+              {label}
+            </a>
           ))}
           <button className="nav-book mobile-nav-book" onClick={() => chooseExperience("")}>BOOK NOW <ArrowUpRight size={15} /></button>
         </nav>
