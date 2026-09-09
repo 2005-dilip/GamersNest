@@ -91,6 +91,11 @@ When users ask about tournaments, esports cups, local competitions, or cash priz
 - Explain that the GamersNest Esports Cup is currently announcing soon and the waiting list is open!
 - Encourage them to stay tuned and join the waiting list on WhatsApp to get notified when tournament dates drop.
 
+CRITICAL FORMATTING INSTRUCTIONS FOR MOBILE DISPLAY:
+- DO NOT output Markdown tables (e.g. |---|---|). Markdown tables look clumsy and broken on mobile screens.
+- ALWAYS use clean bullet points with bold headers (e.g. • **Single Player (1 player)**: ₹100 / hour).
+- Keep lists concise, mobile-scannable, and clean.
+
 IMPORTANT ROUTE / LINKING INSTRUCTIONS:
 Always include the relevant Markdown action button at the end of your response to help the user navigate immediately:
 - For booking/appointments: include [📅 Book Session Now](#book)
@@ -119,6 +124,23 @@ const GROQ_MODELS = [
   "llama-3.3-70b-versatile"
 ];
 
+function parseInlineMarkdown(text) {
+  if (!text) return "";
+  const cleaned = text.replace(/\*{3,}/g, "**");
+  const parts = cleaned.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, pIdx) => {
+    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+      const boldText = part.slice(2, -2);
+      return (
+        <strong key={pIdx} style={{ color: "#00f2fe", fontWeight: 700 }}>
+          {boldText}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
 function FormattedMessage({ content, prevUserMsg, onActionClick }) {
   const links = [];
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -130,7 +152,7 @@ function FormattedMessage({ content, prevUserMsg, onActionClick }) {
   }
 
   // 2. Automatic safety net for key intents
-  const combined = (content + " " + prevUserMsg).toLowerCase();
+  const combined = (content + " " + (prevUserMsg || "")).toLowerCase();
   if (combined.includes("book") || combined.includes("slot") || combined.includes("reserve") || combined.includes("appointment")) {
     links.push({ text: "📅 Book Session Now", url: "#book" });
   }
@@ -159,48 +181,162 @@ function FormattedMessage({ content, prevUserMsg, onActionClick }) {
     }
   }
 
-  // Clean raw markdown links from body completely so they only render as action buttons below
+  // Clean raw markdown links from body completely
   const cleanBody = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "").trim();
 
-  // Split lines and format markdown Elements (**bold**, * bullets, etc.)
+  // Split lines and parse blocks (tables, headers, dividers, bullets, text)
   const lines = cleanBody.split("\n");
+  const blocks = [];
+  let currentTableRows = [];
 
-  const formattedElements = lines.map((line, lineIdx) => {
-    let trimmed = line.trim();
-    if (!trimmed) return <div key={lineIdx} style={{ height: "4px" }} />;
+  const flushTable = () => {
+    if (currentTableRows.length > 0) {
+      blocks.push({ type: "table", rows: [...currentTableRows] });
+      currentTableRows = [];
+    }
+  };
 
-    // Detect bullet points
-    const isBullet = trimmed.startsWith("* ") || trimmed.startsWith("- ") || trimmed.startsWith("• ");
-    if (isBullet) {
-      trimmed = trimmed.replace(/^[\*\-•]\s*/, "");
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+
+    // Table separator row like |---|---|
+    if (/^\|?\s*[-:]+\s*\|[\s-:]*\|?/.test(trimmed)) {
+      return;
     }
 
-    // Process inline markdown **bold text**
-    const parts = trimmed.split(/(\*\*[^*]+\*\*)/g);
-    const inlineNodes = parts.map((part, pIdx) => {
-      if (part.startsWith("**") && part.endsWith("**")) {
-        const boldText = part.slice(2, -2);
-        return (
-          <strong key={pIdx} style={{ color: "#00f2fe", fontWeight: 700 }}>
-            {boldText}
-          </strong>
-        );
-      }
-      return part;
-    });
+    // Table row like | Mode | Rate |
+    if (trimmed.startsWith("|") && trimmed.endsWith("|") && trimmed.length > 2) {
+      const cells = trimmed
+        .split("|")
+        .slice(1, -1)
+        .map((cell) => cell.trim())
+        .filter((cell) => cell.length > 0);
 
-    if (isBullet) {
+      if (cells.length > 0) {
+        currentTableRows.push(cells);
+        return;
+      }
+    }
+
+    flushTable();
+
+    if (!trimmed) {
+      blocks.push({ type: "spacer" });
+    } else if (/^(---|[*]{3,}|_{3,})$/.test(trimmed)) {
+      blocks.push({ type: "divider" });
+    } else if (trimmed.startsWith("### ") || trimmed.startsWith("## ") || trimmed.startsWith("# ")) {
+      const headerText = trimmed.replace(/^#+\s*/, "");
+      blocks.push({ type: "header", text: headerText });
+    } else if (/^[\*\-•]\s*/.test(trimmed)) {
+      const bulletText = trimmed.replace(/^[\*\-•]\s*/, "");
+      blocks.push({ type: "bullet", text: bulletText });
+    } else {
+      blocks.push({ type: "paragraph", text: trimmed });
+    }
+  });
+
+  flushTable();
+
+  const renderedElements = blocks.map((block, idx) => {
+    if (block.type === "spacer") {
+      return <div key={idx} style={{ height: "4px" }} />;
+    }
+
+    if (block.type === "divider") {
       return (
-        <div key={lineIdx} style={{ display: "flex", alignItems: "flex-start", gap: "8px", margin: "5px 0" }}>
-          <span style={{ color: "#00f2fe", fontSize: "14px", lineHeight: "1.3" }}>•</span>
-          <div style={{ flex: 1, lineHeight: "1.5" }}>{inlineNodes}</div>
+        <div
+          key={idx}
+          style={{
+            height: "1px",
+            background: "linear-gradient(90deg, rgba(0, 242, 254, 0.4), rgba(163, 230, 53, 0.2), transparent)",
+            margin: "8px 0"
+          }}
+        />
+      );
+    }
+
+    if (block.type === "header") {
+      return (
+        <div
+          key={idx}
+          style={{
+            color: "#a3e635",
+            fontWeight: 800,
+            fontSize: "13px",
+            letterSpacing: "0.5px",
+            textTransform: "uppercase",
+            marginTop: "10px",
+            marginBottom: "4px",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px"
+          }}
+        >
+          <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#a3e635", display: "inline-block" }} />
+          {parseInlineMarkdown(block.text)}
+        </div>
+      );
+    }
+
+    if (block.type === "bullet") {
+      return (
+        <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "8px", margin: "4px 0" }}>
+          <span style={{ color: "#00f2fe", fontSize: "12px", lineHeight: "1.4" }}>•</span>
+          <div style={{ flex: 1, lineHeight: "1.45" }}>{parseInlineMarkdown(block.text)}</div>
+        </div>
+      );
+    }
+
+    if (block.type === "table") {
+      const rows = block.rows;
+      if (rows.length === 0) return null;
+      const isHeader = rows.length > 1;
+      const dataRows = isHeader ? rows.slice(1) : rows;
+
+      return (
+        <div
+          key={idx}
+          style={{
+            margin: "8px 0",
+            padding: "8px 10px",
+            borderRadius: "10px",
+            background: "rgba(10, 16, 28, 0.8)",
+            border: "1px solid rgba(0, 242, 254, 0.25)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "6px"
+          }}
+        >
+          {dataRows.map((row, rIdx) => (
+            <div
+              key={rIdx}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "4px 6px",
+                borderRadius: "6px",
+                background: rIdx % 2 === 0 ? "rgba(255, 255, 255, 0.03)" : "transparent",
+                fontSize: "12px"
+              }}
+            >
+              <div style={{ fontWeight: 600, color: "#ffffff" }}>
+                {parseInlineMarkdown(row[0] || "")}
+              </div>
+              {row.slice(1).map((cell, cIdx) => (
+                <div key={cIdx} style={{ fontWeight: 700, color: "#00f2fe", fontFamily: "monospace" }}>
+                  {parseInlineMarkdown(cell)}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       );
     }
 
     return (
-      <p key={lineIdx} style={{ margin: "4px 0", lineHeight: "1.5" }}>
-        {inlineNodes}
+      <p key={idx} style={{ margin: "4px 0", lineHeight: "1.45" }}>
+        {parseInlineMarkdown(block.text)}
       </p>
     );
   });
@@ -208,7 +344,7 @@ function FormattedMessage({ content, prevUserMsg, onActionClick }) {
   return (
     <div>
       <div style={{ fontSize: "13.5px", color: "#e2e8f0" }}>
-        {formattedElements}
+        {renderedElements}
       </div>
 
       {/* Cyberpunk Action Route Cards */}
