@@ -483,18 +483,15 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [selectedGallery]);
 
-  // Lock body scroll when mobile navigation drawer is open to prevent background scrolling bugs
+  // Lock body scroll cleanly on mobile without resetting window scroll position
   useEffect(() => {
     if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-      document.body.style.touchAction = "none";
+      document.documentElement.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
+      document.documentElement.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
+      document.documentElement.style.overflow = "";
     };
   }, [mobileOpen]);
 
@@ -505,8 +502,9 @@ export default function Home() {
 
   const scrollToId = (id: string) => {
     setMobileOpen(false);
-    document.body.style.overflow = "";
-    window.setTimeout(() => {
+    document.documentElement.style.overflow = "";
+
+    const doScroll = () => {
       if (id === "home") {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
@@ -522,7 +520,13 @@ export default function Home() {
           });
         }
       }
-    }, 100);
+    };
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        doScroll();
+      });
+    });
   };
 
   const chooseExperience = (experience: string) => {

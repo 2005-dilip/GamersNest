@@ -413,7 +413,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .site-nav { height: 72px; padding-inline: 18px; }
   .site-nav-mobile-open { background: #05090c !important; border-bottom: 1px solid rgba(255,255,255,.12) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; z-index: 120 !important; }
   .menu-toggle { display: grid; place-items: center; margin-left: auto; padding: 8px; border: 1px solid rgba(255,255,255,.18); color: #f5f8f6; background: transparent; cursor: pointer; }
-  .nav-links { position: fixed; top: 72px; right: 0; bottom: 0; left: 0; z-index: 119; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 20px 24px 40px; border-bottom: 1px solid rgba(255,255,255,.12); background: #05090c; backdrop-filter: none; -webkit-backdrop-filter: none; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
+  .nav-links { position: fixed; top: 72px; right: 0; bottom: 0; left: 0; z-index: 119; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 20px 24px 40px; border-bottom: 1px solid rgba(255,255,255,.12); background: #05090c; backdrop-filter: none; -webkit-backdrop-filter: none; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; scrollbar-width: none; -ms-overflow-style: none; }
   .nav-links::-webkit-scrollbar { display: none; }
   .nav-links-open { display: flex; }
   .nav-links a { padding: 16px 4px; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 11px; letter-spacing: 0.1em; color: #ffffff; }
