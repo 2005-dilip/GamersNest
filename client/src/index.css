@@ -53,7 +53,8 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; background: #080c10; }
+html { scroll-behavior: smooth; scroll-padding-top: 86px; background: #080c10; }
+section[id] { scroll-margin-top: 86px; }
 body { margin: 0; min-width: 320px; background: #080c10; color: #f6f8f4; font-family: var(--font-body); }
 button, input, textarea, select { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
@@ -405,6 +406,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 @media (max-width: 760px) {
+  html { scroll-padding-top: 72px; }
+  section[id] { scroll-margin-top: 72px; }
   .shell-width { width: calc(100% - 36px); }
   .section-pad { padding-block: 88px; }
   .site-nav { height: 72px; padding-inline: 18px; }

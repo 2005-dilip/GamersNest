@@ -506,10 +506,23 @@ export default function Home() {
   const scrollToId = (id: string) => {
     setMobileOpen(false);
     document.body.style.overflow = "";
-    document.body.style.touchAction = "";
     window.setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 80);
+      if (id === "home") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        const el = document.getElementById(id);
+        if (el) {
+          const navHeight = window.innerWidth <= 760 ? 72 : 86;
+          const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - navHeight;
+
+          window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: "smooth"
+          });
+        }
+      }
+    }, 100);
   };
 
   const chooseExperience = (experience: string) => {
