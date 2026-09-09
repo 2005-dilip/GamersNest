@@ -126,15 +126,25 @@ const GROQ_MODELS = [
 
 function parseInlineMarkdown(text) {
   if (!text) return "";
-  // 1. Fix mismatched asterisks like *Pro Tip:** or ***Pro Tip:** or **Pro Tip:*
+
+  // 1. Sanitize asterisks so no raw ** or * ever leaks out in UI
   let cleaned = text
     .replace(/\*{3,}/g, "**")
-    .replace(/^\*\s*(\*\*[^*]+\*\*)/g, "$1")  // '* **text**' -> '**text**'
-    .replace(/^\*([^\s*]+:\*\*)/g, "**$1")    // '*Pro Tip:**' -> '**Pro Tip:**'
-    .replace(/^\*([^\s*]+\*\*)/g, "**$1");    // '*Pro Tip:**' -> '**Pro Tip:**'
+    .replace(/(\s|^|\()\*\s*([^*]+)\*\*/g, "$1**$2**")   // '*Sports & Racing**' -> '**Sports & Racing**'
+    .replace(/(\s|^|\()\*\*([^*]+)\*(?!\*)/g, "$1**$2**") // '**Sports & Racing*' -> '**Sports & Racing**'
+    .replace(/\*\*/g, "™DOUBLESTAR™");                    // Protect valid pairs
 
-  // 2. Tokenize bold **text** and italic *text*
-  const parts = cleaned.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+  // Remove any remaining single stray *
+  cleaned = cleaned.replace(/\*/g, "").replace(/™DOUBLESTAR™/g, "**");
+
+  // If there's an odd number of '**', balance or strip unmatched **
+  const countStars = (cleaned.match(/\*\*/g) || []).length;
+  if (countStars % 2 !== 0) {
+    cleaned = cleaned.replace(/\*\*(?=[^*]*$)/, "");
+  }
+
+  // 2. Tokenize bold **text**
+  const parts = cleaned.split(/(\*\*[^*]+\*\*)/g);
   return parts.map((part, pIdx) => {
     if (part.startsWith("**") && part.endsWith("**") && part.length >= 4) {
       const boldText = part.slice(2, -2);
@@ -142,14 +152,6 @@ function parseInlineMarkdown(text) {
         <strong key={pIdx} style={{ color: "#00f2fe", fontWeight: 700 }}>
           {boldText}
         </strong>
-      );
-    }
-    if (part.startsWith("*") && part.endsWith("*") && part.length >= 3) {
-      const italicText = part.slice(1, -1);
-      return (
-        <em key={pIdx} style={{ color: "#c4ff3d", fontStyle: "italic" }}>
-          {italicText}
-        </em>
       );
     }
     return part;
