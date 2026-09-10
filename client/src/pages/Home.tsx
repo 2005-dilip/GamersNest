@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock3,
+  Compass,
   Gamepad2,
   Instagram,
   MapPin,
@@ -20,6 +21,7 @@ import {
   Phone,
   Play,
   Quote,
+  Sparkles,
   Star,
   Trophy,
   Users,
@@ -213,6 +215,7 @@ function normalizeBookingExperience(value: string): BookingExperience | "" {
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("home");
   const [activeCategory, setActiveCategory] = useState("ALL");
   const [selectedGallery, setSelectedGallery] = useState<number | null>(null);
   const [selectedExperience, setSelectedExperience] = useState<BookingExperience | "">("");
@@ -431,6 +434,31 @@ export default function Home() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const sections = ["home", "experiences", "games", "pricing", "gallery", "reviews", "location", "book"];
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observerOptions: IntersectionObserverInit = {
+      root: null,
+      rootMargin: "-25% 0px -55% 0px",
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleBookingSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -582,35 +610,166 @@ export default function Home() {
         aria-hidden="true"
       />
       <GamerCharacterWalk />
-      <header className={`site-nav ${scrolled ? "site-nav-scrolled" : ""} ${mobileOpen ? "site-nav-mobile-open" : ""}`}>
+      <header className={`site-nav ${scrolled ? "site-nav-scrolled" : ""}`}>
+        <div className="site-nav-inner shell-width">
+          <a
+            href="#home"
+            className="brand-lockup"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToId("home");
+            }}
+            aria-label="Gamers Nest home"
+          >
+            <div className="brand-mark-wrapper">
+              <img src={logoMark} alt="Gamers Nest logo" className="brand-mark" />
+              <span className="brand-pulse-dot" />
+            </div>
+            <div className="brand-text-container">
+              <span className="brand-wordmark"><strong>GAMERS</strong><em>NEST</em></span>
+              <span className="brand-subtext"><span className="status-dot-sm" /> AYAPPAKKAM</span>
+            </div>
+          </a>
 
-        <a href="#home" className="brand-lockup" onClick={() => scrollToId("home")} aria-label="Gamers Nest home">
-          <img src={logoMark} alt="" className="brand-mark" />
-          <span className="brand-wordmark"><strong>GAMERS</strong><em>NEST</em></span>
-        </a>
-        <nav className={`nav-links ${mobileOpen ? "nav-links-open" : ""}`} aria-label="Primary navigation">
-          {[
-            ["HOME", "home"], ["CONSOLES", "experiences"], ["GAMES", "games"], ["PRICING", "pricing"],
-            ["GALLERY", "gallery"], ["REVIEWS", "reviews"], ["LOCATION", "location"],
-          ].map(([label, id]) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId(id);
-              }}
-            >
-              {label}
-            </a>
-          ))}
-          <button className="nav-book mobile-nav-book" onClick={() => chooseExperience("")}>BOOK NOW <ArrowUpRight size={15} /></button>
-        </nav>
-        <button className="nav-book desktop-nav-book" onClick={() => chooseExperience("")}>BOOK NOW <ArrowUpRight size={15} /></button>
-        <button className="menu-toggle" onClick={() => setMobileOpen((value) => !value)} aria-expanded={mobileOpen} aria-label={mobileOpen ? "Close menu" : "Open menu"}>
-          {mobileOpen ? <X size={23} /> : <Menu size={23} />}
-        </button>
+          <nav className="nav-links desktop-only-nav" aria-label="Primary navigation">
+            {[
+              { label: "HOME", id: "home" },
+              { label: "CONSOLES", id: "experiences" },
+              { label: "GAMES", id: "games" },
+              { label: "PRICING", id: "pricing" },
+              { label: "GALLERY", id: "gallery" },
+              { label: "REVIEWS", id: "reviews" },
+              { label: "LOCATION", id: "location" },
+            ].map(({ label, id }) => {
+              const isActive = activeSection === id;
+              return (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  className={`nav-link-item ${isActive ? "active" : ""}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToId(id);
+                  }}
+                >
+                  <span>{label}</span>
+                  {isActive && <span className="nav-active-pill" />}
+                </a>
+              );
+            })}
+          </nav>
+
+          <button className="nav-book desktop-nav-book" onClick={() => chooseExperience("")}>
+            <span>BOOK NOW</span>
+            <ArrowUpRight size={15} />
+          </button>
+
+          <button
+            className="menu-toggle"
+            onClick={() => setMobileOpen((value) => !value)}
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </header>
+
+      {/* Mobile Drawer Backdrop */}
+      <div
+        className={`mobile-nav-drawer-backdrop ${mobileOpen ? "open" : ""}`}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Mobile Nav Drawer */}
+      <div
+        className={`mobile-nav-drawer ${mobileOpen ? "open" : ""}`}
+        aria-label="Mobile navigation menu"
+        role="dialog"
+        aria-modal={mobileOpen}
+      >
+        <div className="mobile-drawer-header">
+          <div className="mobile-drawer-brand">
+            <img src={logoMark} alt="" className="brand-mark-sm" />
+            <div className="mobile-drawer-brand-text">
+              <span className="brand-title">GAMERS NEST</span>
+              <span className="brand-badge"><span className="status-dot-sm" /> OPEN 11 AM – 11 PM</span>
+            </div>
+          </div>
+          <button
+            className="mobile-drawer-close"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close menu"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="mobile-drawer-body">
+          <nav className="mobile-nav-list" aria-label="Mobile menu links">
+            {[
+              { label: "HOME", id: "home", desc: "Main lounge overview", icon: Compass },
+              { label: "CONSOLES", id: "experiences", desc: "PS2, PS4, PS5, Simulator & VR", icon: Gamepad2 },
+              { label: "GAMES", id: "games", desc: "Browse 50+ available games", icon: Play },
+              { label: "PRICING", id: "pricing", desc: "Hourly rates & squad packages", icon: Zap },
+              { label: "GALLERY", id: "gallery", desc: "Photos of our setup & vibes", icon: Sparkles },
+              { label: "REVIEWS", id: "reviews", desc: "What our gamers say", icon: Star },
+              { label: "LOCATION", id: "location", desc: "Find us in Ayappakkam", icon: MapPin },
+            ].map(({ label, id, desc, icon: Icon }) => {
+              const isActive = activeSection === id;
+              return (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  className={`mobile-nav-item ${isActive ? "active" : ""}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToId(id);
+                  }}
+                >
+                  <div className="mobile-nav-icon">
+                    <Icon size={18} />
+                  </div>
+                  <div className="mobile-nav-text">
+                    <span className="mobile-nav-label">{label}</span>
+                    <span className="mobile-nav-desc">{desc}</span>
+                  </div>
+                  <ChevronRight size={16} className="mobile-nav-arrow" />
+                </a>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="mobile-drawer-footer">
+          <button
+            className="mobile-drawer-cta"
+            onClick={() => {
+              setMobileOpen(false);
+              chooseExperience("");
+            }}
+          >
+            <span>BOOK YOUR SESSION NOW</span>
+            <ArrowUpRight size={16} />
+          </button>
+
+          <div className="mobile-drawer-quick-contacts">
+            <a href={phoneTel} className="quick-contact-btn" aria-label="Call lounge">
+              <Phone size={14} />
+              <span>Call</span>
+            </a>
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="quick-contact-btn whatsapp" aria-label="WhatsApp enquiry">
+              <MessageCircle size={14} />
+              <span>WhatsApp</span>
+            </a>
+            <a href={directionsLink} target="_blank" rel="noopener noreferrer" className="quick-contact-btn" aria-label="Google Maps directions">
+              <MapPin size={14} />
+              <span>Map</span>
+            </a>
+          </div>
+        </div>
+      </div>
 
       <main>
         <section id="home" className="hero-section" style={{ backgroundImage: `url(${photos.hero})` }}>
