@@ -35,6 +35,7 @@ import {
   EXPERIENCES,
   INVENTORY,
   calculateOfficialPrice,
+  calculateSharedSessionBreakdown,
   formatTime12h,
   getConsolesForExperience,
   getMaxPlayers,
@@ -44,7 +45,7 @@ import {
   type AvailabilityResult,
   type Experience,
 } from "@/lib/booking";
-import { checkAvailabilityRemote, createBooking } from "@/lib/booking-data";
+import { checkAvailabilityRemote, createBooking, fetchConsoleSlotAvailability, type ConsoleSlotBooking } from "@/lib/booking-data";
 import { BookingSelect } from "@/components/ui/booking-select";
 import { GamerCharacterWalk } from "@/components/GamerCharacterWalk";
 import { TournamentMysteryCard } from "@/components/TournamentMysteryCard";
@@ -218,7 +219,6 @@ export default function Home() {
   const [selectedConsoleId, setSelectedConsoleId] = useState<ConsoleId | "">("");
   const [selectedGame, setSelectedGame] = useState("");
   const [activeSessionGame, setActiveSessionGame] = useState<string | undefined>(undefined);
-  const [isSharedSession, setIsSharedSession] = useState<boolean>(false);
   const [isSharedSessionConfirmed, setIsSharedSessionConfirmed] = useState<boolean>(false);
   const [players, setPlayers] = useState(1);
   const [bookingDate, setBookingDate] = useState("");
@@ -266,7 +266,6 @@ export default function Home() {
       setSelectedConsoleId(defaultConsole);
       setStartTime("");
       setEndTime("");
-      setIsSharedSession(false);
       setIsSharedSessionConfirmed(false);
       setActiveSessionGame(undefined);
     }
@@ -285,15 +284,51 @@ export default function Home() {
     if (startTime && endTime && endTime <= startTime) setEndTime("");
   }, [startTime, endTime]);
 
-  // Live calculated price matching official rules
+  // Live availability status & calculated price
+  const timeRangeValid = isValidTimeRange(startTime, endTime);
+  const withinStoreHours = isWithinStoreHours(startTime, endTime);
   const calculatedPrice = useMemo(() => {
     if (!selectedExperience || !startTime || !endTime) return 0;
     return calculateOfficialPrice(selectedExperience, players, startTime, endTime);
   }, [selectedExperience, players, startTime, endTime]);
 
-  // Live availability status, backed by Supabase data.
-  const timeRangeValid = isValidTimeRange(startTime, endTime);
-  const withinStoreHours = isWithinStoreHours(startTime, endTime);
+  const [slotBookings, setSlotBookings] = useState<ConsoleSlotBooking[]>([]);
+
+  // Fetch slot bookings whenever date changes
+  useEffect(() => {
+    let active = true;
+    if (!bookingDate) {
+      setSlotBookings([]);
+      return;
+    }
+    fetchConsoleSlotAvailability(bookingDate)
+      .then((data) => {
+        if (active) setSlotBookings(data);
+      })
+      .catch(() => {
+        if (active) setSlotBookings([]);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [bookingDate]);
+
+  const sharedBreakdown = useMemo(() => {
+    if (!selectedExperience || !startTime || !endTime || !timeRangeValid) {
+      return null;
+    }
+    return calculateSharedSessionBreakdown(
+      selectedExperience,
+      selectedConsoleId,
+      startTime,
+      endTime,
+      slotBookings
+    );
+  }, [selectedExperience, selectedConsoleId, startTime, endTime, timeRangeValid, slotBookings]);
+
+  const isSharedSession = Boolean(sharedBreakdown?.isSharedSession);
+
   const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -332,7 +367,6 @@ export default function Home() {
           if (result.existingGame) {
             setActiveSessionGame(result.existingGame);
             setSelectedGame(result.existingGame);
-            setIsSharedSession(true);
           }
         }
       } catch (error) {
@@ -367,16 +401,13 @@ export default function Home() {
     setSelectedConsoleId(consoleId);
     setStartTime(start);
     setEndTime(end);
+    setIsSharedSessionConfirmed(false);
 
     if (existingGame) {
       setActiveSessionGame(existingGame);
       setSelectedGame(existingGame);
-      setIsSharedSession(true);
-      setIsSharedSessionConfirmed(false);
     } else {
       setActiveSessionGame(undefined);
-      setIsSharedSession(false);
-      setIsSharedSessionConfirmed(true);
     }
   };
 
@@ -465,6 +496,7 @@ export default function Home() {
       `• Time: ${formatTime12h(bookingDetails.startTime)} – ${formatTime12h(bookingDetails.endTime)}`,
     ];
     if (bookingDetails.game) lines.push(`• Game: ${bookingDetails.game}`);
+    if (isSharedSession) lines.push(`• Shared Session: Agreed to join existing game`);
     if (bookingDetails.message) lines.push(`• Note: ${bookingDetails.message}`);
     return `https://wa.me/919159588666?text=${encodeURIComponent(lines.join("\n"))}`;
   }, [bookingDetails]);
@@ -1355,20 +1387,44 @@ export default function Home() {
                   </div>
 
                   {/* Shared Session Warning Card & Mandatory Acknowledgement Checkbox */}
-                  {isSharedSession && activeSessionGame && (
+                  {isSharedSession && sharedBreakdown && (
                     <div className="p-4 rounded-xl border border-amber-500/50 bg-amber-950/30 text-amber-200 text-xs space-y-3 font-mono my-4 shadow-xl">
                       <div className="flex items-center space-x-2 font-bold text-amber-400 text-sm">
                         <AlertTriangle className="h-5 w-5 flex-shrink-0 text-amber-400" />
                         <span>⚠️ Shared Gaming Session</span>
                       </div>
                       <p className="leading-relaxed">
-                        This console ({selectedConsoleId}) already has players booked for this time slot.
-                        By booking the remaining seats, you will join the existing gaming session and play the same game.
+                        {sharedBreakdown.formattedOpenRange ? (
+                          <>
+                            This console ({selectedConsoleId || selectedExperience}) is partially booked during <strong>{sharedBreakdown.formattedSharedRange}</strong>.
+                            By booking this time window, you will join the existing session during <strong>{sharedBreakdown.formattedSharedRange}</strong> on the same TV screen.
+                            The remaining period (<strong>{sharedBreakdown.formattedOpenRange}</strong>) is an open/private slot.
+                          </>
+                        ) : (
+                          <>
+                            This console ({selectedConsoleId || selectedExperience}) already has players booked for this time slot ({sharedBreakdown.formattedSharedRange}).
+                            By booking the remaining seats, you will join the existing gaming session on the same TV screen.
+                          </>
+                        )}
                       </p>
-                      <div className="p-3 bg-slate-900/90 rounded-lg border border-amber-500/30 space-y-1 text-slate-200">
-                        <div><strong>Console:</strong> <span className="text-white">{selectedConsoleId}</span></div>
-                        <div><strong>Current Game:</strong> <span className="text-[#00f2fe] font-bold">🎮 {activeSessionGame}</span></div>
-                        <div><strong>Time Slot:</strong> {formatTime12h(startTime)} – {formatTime12h(endTime)}</div>
+                      <div className="p-3 bg-slate-900/90 rounded-lg border border-amber-500/30 space-y-1.5 text-slate-200">
+                        <div><strong>Console:</strong> <span className="text-white">{selectedConsoleId || selectedExperience}</span></div>
+                        <div>
+                          <strong>Shared Session Period:</strong>{" "}
+                          <span className="text-amber-400 font-bold">{sharedBreakdown.formattedSharedRange}</span>
+                        </div>
+                        {sharedBreakdown.formattedOpenRange && (
+                          <div>
+                            <strong>Open Session Period:</strong>{" "}
+                            <span className="text-emerald-400 font-bold">{sharedBreakdown.formattedOpenRange}</span>
+                          </div>
+                        )}
+                        {sharedBreakdown.activeGames.length > 0 && (
+                          <div>
+                            <strong>Current Game ({sharedBreakdown.formattedSharedRange}):</strong>{" "}
+                            <span className="text-[#00f2fe] font-bold">🎮 {sharedBreakdown.activeGames.join(", ")}</span>
+                          </div>
+                        )}
                       </div>
                       <label className="flex items-start space-x-2.5 cursor-pointer pt-2 text-white font-sans text-xs">
                         <input
@@ -1378,7 +1434,13 @@ export default function Home() {
                           className="mt-0.5 h-4 w-4 rounded border-amber-500 text-[#00f2fe] focus:ring-[#00f2fe] cursor-pointer"
                           required
                         />
-                        <span className="font-semibold">I understand that I will join the existing session and play the same game.</span>
+                        <span className="font-semibold">
+                          {sharedBreakdown.formattedOpenRange
+                            ? `I understand that I will join the existing session during ${sharedBreakdown.formattedSharedRange} and share the TV screen with existing players.`
+                            : sharedBreakdown.activeGames.length > 0
+                            ? `I understand that I will join the existing session and play ${sharedBreakdown.activeGames.join(", ")}.`
+                            : "I understand that I will join the existing session and share the TV screen with existing players."}
+                        </span>
                       </label>
                     </div>
                   )}

@@ -344,5 +344,94 @@ export function checkAvailability(
   return { available, availableUnits, requestedUnits, capacity, consoleId: targetConsoleId, existingGame, price, message };
 }
 
+export interface SharedSessionBreakdown {
+  isSharedSession: boolean;
+  formattedSharedRange: string;
+  formattedOpenRange: string;
+  activeGames: string[];
+}
+
+export function calculateSharedSessionBreakdown(
+  experience: Experience,
+  consoleId: ConsoleId | "",
+  startTime: string,
+  endTime: string,
+  slotBookings: Array<{
+    console_id?: string | null;
+    experience: string;
+    start_time: string;
+    end_time: string;
+    players?: number;
+    game?: string | null;
+  }>
+): SharedSessionBreakdown {
+  if (!startTime || !endTime || !isValidTimeRange(startTime, endTime)) {
+    return { isSharedSession: false, formattedSharedRange: "", formattedOpenRange: "", activeGames: [] };
+  }
+
+  const slotIntervalMinutes = experience === "VR GAMING" ? 30 : 60;
+  const startMin = toMinutes(startTime);
+  const endMin = toMinutes(endTime);
+
+  const targetConsoleId = consoleId || getConsolesForExperience(experience)[0]?.id;
+
+  const relevantBookings = slotBookings.filter((b) => {
+    if (b.console_id) return b.console_id === targetConsoleId;
+    return b.experience === experience;
+  });
+
+  const sharedSlots: { start: number; end: number; game?: string }[] = [];
+  const openSlots: { start: number; end: number }[] = [];
+  const gamesSet = new Set<string>();
+
+  for (let current = startMin; current < endMin; current += slotIntervalMinutes) {
+    const next = current + slotIntervalMinutes;
+
+    const overlapping = relevantBookings.filter((b) => {
+      const bStart = toMinutes(b.start_time);
+      const bEnd = toMinutes(b.end_time);
+      return bStart < next && bEnd > current;
+    });
+
+    const isShared = overlapping.length > 0;
+    const activeGame = overlapping.find((b) => Boolean(b.game))?.game;
+
+    if (isShared) {
+      sharedSlots.push({ start: current, end: next, game: activeGame || undefined });
+      if (activeGame) gamesSet.add(activeGame);
+    } else {
+      openSlots.push({ start: current, end: next });
+    }
+  }
+
+  if (sharedSlots.length === 0) {
+    return { isSharedSession: false, formattedSharedRange: "", formattedOpenRange: "", activeGames: [] };
+  }
+
+  const formatMinTo12h = (min: number) => {
+    const hh = String(Math.floor(min / 60)).padStart(2, "0");
+    const mm = String(min % 60).padStart(2, "0");
+    return formatTime12h(`${hh}:${mm}`);
+  };
+
+  const sharedStart = formatMinTo12h(sharedSlots[0].start);
+  const sharedEnd = formatMinTo12h(sharedSlots[sharedSlots.length - 1].end);
+  const formattedSharedRange = `${sharedStart} – ${sharedEnd}`;
+
+  let formattedOpenRange = "";
+  if (openSlots.length > 0) {
+    const openStart = formatMinTo12h(openSlots[0].start);
+    const openEnd = formatMinTo12h(openSlots[openSlots.length - 1].end);
+    formattedOpenRange = `${openStart} – ${openEnd}`;
+  }
+
+  return {
+    isSharedSession: true,
+    formattedSharedRange,
+    formattedOpenRange,
+    activeGames: Array.from(gamesSet),
+  };
+}
+
 export { PLAYABLE_GAMES, PLAYABLE_GAME_TITLES } from "./games-data";
 
