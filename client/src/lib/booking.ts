@@ -198,10 +198,31 @@ export function getMaxPlayers(experience: Experience): number {
 
 /** Convert "HH:MM" to minutes since midnight; NaN if malformed. */
 export function toMinutes(time: string): number {
-  if (!time || !/^\d{1,2}:\d{2}$/.test(time)) return Number.NaN;
-  const [h, m] = time.split(":").map(Number);
-  if (Number.isNaN(h) || Number.isNaN(m)) return Number.NaN;
-  return h * 60 + m;
+  if (!time) return Number.NaN;
+  const str = time.trim();
+
+  // Handle 12-hour AM/PM format e.g. "12:00 PM", "1:30 AM"
+  const ampmMatch = str.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (ampmMatch) {
+    let h = parseInt(ampmMatch[1], 10);
+    const m = parseInt(ampmMatch[2], 10);
+    const isPm = ampmMatch[3].toUpperCase() === "PM";
+    if (isPm && h < 12) h += 12;
+    if (!isPm && h === 12) h = 0;
+    return h * 60 + m;
+  }
+
+  // Handle 24-hour format e.g. "12:00", "12:00:00", "09:30:15"
+  const match = str.match(/^(\d{1,2}):(\d{2})(?::\d{2})?/);
+  if (match) {
+    const h = parseInt(match[1], 10);
+    const m = parseInt(match[2], 10);
+    if (!Number.isNaN(h) && !Number.isNaN(m)) {
+      return h * 60 + m;
+    }
+  }
+
+  return Number.NaN;
 }
 
 /** Format a 24h "HH:MM" string as a 12-hour label, e.g. "15:30" -> "3:30 PM". */
