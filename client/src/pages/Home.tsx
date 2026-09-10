@@ -327,12 +327,19 @@ export default function Home() {
     );
   }, [selectedExperience, selectedConsoleId, startTime, endTime, timeRangeValid, slotBookings]);
 
-  const isSharedSession = Boolean(sharedBreakdown?.isSharedSession);
-
   const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
+
+  const isSharedSessionFromAvailability = Boolean(
+    availability &&
+    availability.available &&
+    availability.capacity > 0 &&
+    (availability.existingGame || availability.availableUnits < availability.capacity)
+  );
+
+  const isSharedSession = Boolean(sharedBreakdown?.isSharedSession || isSharedSessionFromAvailability);
 
   const canCheck = Boolean(
     selectedExperience && bookingDate && startTime && endTime && timeRangeValid && withinStoreHours,
@@ -1387,14 +1394,14 @@ export default function Home() {
                   </div>
 
                   {/* Shared Session Warning Card & Mandatory Acknowledgement Checkbox */}
-                  {isSharedSession && sharedBreakdown && (
+                  {isSharedSession && (
                     <div className="p-4 rounded-xl border border-amber-500/50 bg-amber-950/30 text-amber-200 text-xs space-y-3 font-mono my-4 shadow-xl">
                       <div className="flex items-center space-x-2 font-bold text-amber-400 text-sm">
                         <AlertTriangle className="h-5 w-5 flex-shrink-0 text-amber-400" />
                         <span>⚠️ Shared Gaming Session</span>
                       </div>
                       <p className="leading-relaxed">
-                        {sharedBreakdown.formattedOpenRange ? (
+                        {sharedBreakdown?.formattedOpenRange ? (
                           <>
                             This console ({selectedConsoleId || selectedExperience}) is partially booked during <strong>{sharedBreakdown.formattedSharedRange}</strong>.
                             By booking this time window, you will join the existing session during <strong>{sharedBreakdown.formattedSharedRange}</strong> on the same TV screen.
@@ -1402,7 +1409,7 @@ export default function Home() {
                           </>
                         ) : (
                           <>
-                            This console ({selectedConsoleId || selectedExperience}) already has players booked for this time slot ({sharedBreakdown.formattedSharedRange}).
+                            This console ({selectedConsoleId || selectedExperience}) already has players booked for this time slot ({sharedBreakdown?.formattedSharedRange || (startTime && endTime ? `${formatTime12h(startTime)} – ${formatTime12h(endTime)}` : "")}).
                             By booking the remaining seats, you will join the existing gaming session on the same TV screen.
                           </>
                         )}
@@ -1411,18 +1418,18 @@ export default function Home() {
                         <div><strong>Console:</strong> <span className="text-white">{selectedConsoleId || selectedExperience}</span></div>
                         <div>
                           <strong>Shared Session Period:</strong>{" "}
-                          <span className="text-amber-400 font-bold">{sharedBreakdown.formattedSharedRange}</span>
+                          <span className="text-amber-400 font-bold">{sharedBreakdown?.formattedSharedRange || (startTime && endTime ? `${formatTime12h(startTime)} – ${formatTime12h(endTime)}` : "")}</span>
                         </div>
-                        {sharedBreakdown.formattedOpenRange && (
+                        {sharedBreakdown?.formattedOpenRange && (
                           <div>
                             <strong>Open Session Period:</strong>{" "}
                             <span className="text-emerald-400 font-bold">{sharedBreakdown.formattedOpenRange}</span>
                           </div>
                         )}
-                        {sharedBreakdown.activeGames.length > 0 && (
+                        {(sharedBreakdown?.activeGames.length || availability?.existingGame) && (
                           <div>
-                            <strong>Current Game ({sharedBreakdown.formattedSharedRange}):</strong>{" "}
-                            <span className="text-[#00f2fe] font-bold">🎮 {sharedBreakdown.activeGames.join(", ")}</span>
+                            <strong>Current Game ({sharedBreakdown?.formattedSharedRange || (startTime && endTime ? `${formatTime12h(startTime)} – ${formatTime12h(endTime)}` : "")}):</strong>{" "}
+                            <span className="text-[#00f2fe] font-bold">🎮 {sharedBreakdown?.activeGames.join(", ") || availability?.existingGame}</span>
                           </div>
                         )}
                       </div>
@@ -1435,10 +1442,10 @@ export default function Home() {
                           required
                         />
                         <span className="font-semibold">
-                          {sharedBreakdown.formattedOpenRange
+                          {sharedBreakdown?.formattedOpenRange
                             ? `I understand that I will join the existing session during ${sharedBreakdown.formattedSharedRange} and share the TV screen with existing players.`
-                            : sharedBreakdown.activeGames.length > 0
-                            ? `I understand that I will join the existing session and play ${sharedBreakdown.activeGames.join(", ")}.`
+                            : (sharedBreakdown?.activeGames.length || availability?.existingGame)
+                            ? `I understand that I will join the existing session and play ${sharedBreakdown?.activeGames.join(", ") || availability?.existingGame}.`
                             : "I understand that I will join the existing session and share the TV screen with existing players."}
                         </span>
                       </label>
