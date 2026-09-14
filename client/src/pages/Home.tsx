@@ -57,7 +57,7 @@ import { ConsoleSlotGrid } from "@/components/ConsoleSlotGrid";
 
 
 const photos = {
-  hero: "https://res.cloudinary.com/awaaiqbl/image/upload/v1788163422/home.webp",
+  hero: "https://res.cloudinary.com/awaaiqbl/image/upload/v1788193404/home.webp",
   location: "https://res.cloudinary.com/awaaiqbl/image/upload/v1788163423/adress.webp",
   one: "https://res.cloudinary.com/awaaiqbl/image/upload/v1788163422/1.webp",
   two: "https://res.cloudinary.com/awaaiqbl/image/upload/v1788163422/2.webp",
