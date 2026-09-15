@@ -1411,3 +1411,32 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   transform: translateZ(0);
 }
 
+/* Gamer Character Walk — iOS Safari Dock Positioning & Sprite Rendering Fallbacks */
+.gamer-walk-dock {
+  position: fixed;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+}
+
+@media (min-width: 640px) {
+  .gamer-walk-dock {
+    bottom: 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  .gamer-walk-dock {
+    bottom: 32px;
+  }
+}
+
+.gamer-character-sprite {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+
+

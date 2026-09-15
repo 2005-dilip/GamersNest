@@ -44,11 +44,10 @@ export const GamerCharacterWalk: React.FC<GamerCharacterWalkProps> = ({
   }, []);
 
   useEffect(() => {
-    if (isReducedMotion) return;
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const totalScrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const vpH = window.visualViewport?.height ?? window.innerHeight;
+      const totalScrollableHeight = Math.max(1, document.documentElement.scrollHeight - vpH);
 
       if (totalScrollableHeight > 0) {
         // Full website scroll progress: 0 at top of page, 1 at bottom of page
@@ -70,12 +69,14 @@ export const GamerCharacterWalk: React.FC<GamerCharacterWalkProps> = ({
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.visualViewport?.addEventListener("resize", handleScroll);
     handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.visualViewport?.removeEventListener("resize", handleScroll);
     };
-  }, [isReducedMotion]);
+  }, []);
 
   // Section-Aware Info & Section Change Detection
   const getSectionBadgeInfo = (p: number) => {
@@ -152,19 +153,17 @@ export const GamerCharacterWalk: React.FC<GamerCharacterWalkProps> = ({
     }
   }, [sectionInfo.tag, currentSectionTag]);
 
-  if (isReducedMotion) {
-    return null;
-  }
-
   // 8 horizontal frames in sprite sheet (2048 x 682)
   const TOTAL_STEPS = 120;
   const TOTAL_FRAMES = 8;
 
-  const currentStep = Math.floor(progress * TOTAL_STEPS);
-  const frameIndex = Math.abs(currentStep) % TOTAL_FRAMES;
+  // On reduced motion, park character statically mid-screen at frame 0 instead of hiding completely
+  const effectiveProgress = isReducedMotion ? 0.5 : progress;
+  const currentStep = Math.floor(effectiveProgress * TOTAL_STEPS);
+  const frameIndex = isReducedMotion ? 0 : Math.abs(currentStep) % TOTAL_FRAMES;
 
   // Character X position: travels from 2% to 90% as page is scrolled
-  const leftPercent = 2 + progress * 88;
+  const leftPercent = 2 + effectiveProgress * 88;
 
   // Background position for current frame out of 8 frames
   const bgPositionX = `${(frameIndex / 7) * 100}%`;
@@ -205,7 +204,7 @@ export const GamerCharacterWalk: React.FC<GamerCharacterWalkProps> = ({
 
   return (
     <div
-      className={`fixed bottom-[calc(64px+env(safe-area-inset-bottom,0px))] sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-40 pointer-events-none overflow-visible h-14 sm:h-20 md:h-24 shell-width ${className}`}
+      className={`gamer-walk-dock pointer-events-none overflow-visible h-14 sm:h-20 md:h-24 shell-width ${className}`}
       aria-hidden="true"
     >
       <div
@@ -251,12 +250,11 @@ export const GamerCharacterWalk: React.FC<GamerCharacterWalkProps> = ({
 
         {/* Character Sprite Sheet Render */}
         <div
-          className="w-full h-full bg-no-repeat transition-all group-hover:drop-shadow-[0_0_20px_rgba(0,242,254,0.8)] drop-shadow-[0_4px_16px_rgba(73,232,255,0.5)]"
+          className="w-full h-full bg-no-repeat gamer-character-sprite transition-all group-hover:drop-shadow-[0_0_20px_rgba(0,242,254,0.8)] drop-shadow-[0_4px_16px_rgba(73,232,255,0.5)]"
           style={{
             backgroundImage: "url('/images/character/gamersnest-gamer-walk.png')",
             backgroundSize: "800% 100%",
             backgroundPosition: `${bgPositionX} 0%`,
-            imageRendering: "pixelated",
           }}
         />
       </div>
