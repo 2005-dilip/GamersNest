@@ -1388,3 +1388,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .experience-index,
 .price-number,
 .reason-index { font-variant-numeric: tabular-nums; }
+
+/* Safari / WebKit Optimization Utilities for Animations & Text Gradients */
+.gradient-text-safari {
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .gradient-text-safari {
+    -webkit-text-fill-color: initial;
+    color: #c4ff3d;
+  }
+}
+
+.ios-backdrop-filter {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+

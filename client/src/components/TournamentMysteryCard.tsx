@@ -44,7 +44,7 @@ export const TournamentMysteryCard: React.FC<TournamentMysteryCardProps> = ({ ch
     return () => mediaQuery.removeEventListener("change", handleMotionChange);
   }, []);
 
-  // Canvas Confetti Celebration Animation
+  // Canvas Confetti Celebration Animation (iOS Retina & size-retry optimized)
   useEffect(() => {
     if (state !== "celebration") return;
 
@@ -53,65 +53,84 @@ export const TournamentMysteryCard: React.FC<TournamentMysteryCardProps> = ({ ch
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const colors = ["#00f2fe", "#c4ff3d", "#ffd34d", "#ffffff", "#38bdf8", "#a855f7"];
-    const particles: Particle[] = [];
-    const particleCount = isReducedMotion ? 15 : 60;
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: canvas.width / 2 + (Math.random() - 0.5) * 40,
-        y: canvas.height / 2 + (Math.random() - 0.5) * 40,
-        vx: (Math.random() - 0.5) * 12,
-        vy: (Math.random() - 0.7) * 14,
-        size: Math.random() * 8 + 4,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: 1,
-        rotation: Math.random() * Math.PI * 2,
-        vRot: (Math.random() - 0.5) * 0.2,
-      });
-    }
-
     let animId: number;
-    const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      let aliveCount = 0;
-      particles.forEach((p) => {
-        if (p.alpha <= 0) return;
-        aliveCount++;
+    const setupAndRender = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 3);
+      const rect = canvas.getBoundingClientRect();
+      const cssW = rect.width || canvas.offsetWidth || canvas.parentElement?.clientWidth || 320;
+      const cssH = rect.height || canvas.offsetHeight || canvas.parentElement?.clientHeight || 320;
 
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.3; // Gravity
-        p.alpha -= 0.015;
-        p.rotation += p.vRot;
-
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, p.alpha);
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rotation);
-        ctx.fillStyle = p.color;
-
-        // Render glowing confetti rectangles / circles
-        if (Math.random() > 0.5) {
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.5);
-        } else {
-          ctx.beginPath();
-          ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.restore();
-      });
-
-      if (aliveCount > 0) {
-        animId = requestAnimationFrame(render);
+      // Sizing retry if element is not laid out yet on Safari
+      if (cssW === 0 || cssH === 0) {
+        animId = requestAnimationFrame(setupAndRender);
+        return;
       }
+
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+      canvas.style.width = cssW + "px";
+      canvas.style.height = cssH + "px";
+      ctx.scale(dpr, dpr);
+
+      const colors = ["#00f2fe", "#c4ff3d", "#ffd34d", "#ffffff", "#38bdf8", "#a855f7"];
+      const particles: Particle[] = [];
+      const particleCount = isReducedMotion ? 15 : 60;
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: cssW / 2 + (Math.random() - 0.5) * 40,
+          y: cssH / 2 + (Math.random() - 0.5) * 40,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.7) * 14,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          rotation: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.2,
+        });
+      }
+
+      const render = () => {
+        ctx.clearRect(0, 0, cssW, cssH);
+
+        let aliveCount = 0;
+        particles.forEach((p) => {
+          if (p.alpha <= 0) return;
+          aliveCount++;
+
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.3; // Gravity
+          p.alpha -= 0.015;
+          p.rotation += p.vRot;
+
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.alpha);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rotation);
+          ctx.fillStyle = p.color;
+
+          // Render glowing confetti rectangles / circles
+          if (Math.random() > 0.5) {
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.5);
+          } else {
+            ctx.beginPath();
+            ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        });
+
+        if (aliveCount > 0) {
+          animId = requestAnimationFrame(render);
+        }
+      };
+
+      render();
     };
 
-    render();
+    setupAndRender();
 
     return () => {
       if (animId) cancelAnimationFrame(animId);
@@ -184,7 +203,7 @@ export const TournamentMysteryCard: React.FC<TournamentMysteryCardProps> = ({ ch
   const isRevealed = state === "revealed";
 
   return (
-    <div className="relative group/mystery rounded-3xl overflow-hidden isolation-auto">
+    <div className="relative group/mystery rounded-3xl overflow-hidden isolate transform-gpu">
       {/* 1. Underlying Tournament Card Content */}
       <motion.div
         animate={{
@@ -205,8 +224,17 @@ export const TournamentMysteryCard: React.FC<TournamentMysteryCardProps> = ({ ch
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
             onClick={handleStartUnlock}
-            className={`absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#080c10]/80 backdrop-blur-md cursor-pointer select-none transition-colors ${
-              state === "locked" ? "hover:bg-[#080c10]/70" : ""
+            style={{
+              WebkitBackdropFilter: "blur(12px)",
+              backdropFilter: "blur(12px)",
+              WebkitTransform: "translateZ(0)",
+              transform: "translateZ(0)",
+              willChange: "opacity, transform",
+              touchAction: "manipulation",
+              WebkitTapHighlightColor: "transparent",
+            }}
+            className={`absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#080c10]/90 backdrop-blur-md cursor-pointer select-none transition-colors ${
+              state === "locked" ? "hover:bg-[#080c10]/80" : ""
             }`}
           >
             {/* Canvas overlay for celebratory neon confetti */}
@@ -231,6 +259,12 @@ export const TournamentMysteryCard: React.FC<TournamentMysteryCardProps> = ({ ch
                           : "0 0 25px rgba(0,242,254,0.4)",
                     }}
                     transition={{ repeat: state === "locked" ? Infinity : 0, duration: 2, ease: "easeInOut" }}
+                    style={{
+                      WebkitBackdropFilter: "blur(16px)",
+                      backdropFilter: "blur(16px)",
+                      WebkitTransform: "translateZ(0)",
+                      transform: "translateZ(0)",
+                    }}
                     className={`h-20 w-20 rounded-full border flex items-center justify-center backdrop-blur-xl transition-colors ${
                       state === "unlocking"
                         ? "bg-[#c4ff3d]/20 border-[#c4ff3d] text-[#c4ff3d]"
@@ -279,7 +313,15 @@ export const TournamentMysteryCard: React.FC<TournamentMysteryCardProps> = ({ ch
                     transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 20 }}
                     className="relative z-10 font-black font-display text-7xl sm:text-8xl text-white drop-shadow-[0_0_30px_rgba(196,255,61,0.8)]"
                   >
-                    <span className="bg-gradient-to-b from-[#ffffff] via-[#c4ff3d] to-[#00f2fe] bg-clip-text text-transparent">
+                    <span
+                      className="bg-gradient-to-b from-[#ffffff] via-[#c4ff3d] to-[#00f2fe] bg-clip-text text-transparent gradient-text-safari"
+                      style={{
+                        WebkitBackgroundClip: "text",
+                        backgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        color: "transparent",
+                      }}
+                    >
                       {count}
                     </span>
                   </motion.div>
@@ -319,7 +361,15 @@ export const TournamentMysteryCard: React.FC<TournamentMysteryCardProps> = ({ ch
                   </div>
                 </div>
 
-                <h2 className="text-3xl sm:text-4xl font-black text-white uppercase font-display tracking-tight bg-gradient-to-r from-[#c4ff3d] via-white to-[#00f2fe] bg-clip-text text-transparent">
+                <h2
+                  className="text-3xl sm:text-4xl font-black text-white uppercase font-display tracking-tight bg-gradient-to-r from-[#c4ff3d] via-white to-[#00f2fe] bg-clip-text text-transparent gradient-text-safari"
+                  style={{
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    color: "transparent",
+                  }}
+                >
                   Surprise Unlocked!
                 </h2>
                 <p className="text-xs font-mono uppercase tracking-widest text-[#00f2fe]">
@@ -335,6 +385,12 @@ export const TournamentMysteryCard: React.FC<TournamentMysteryCardProps> = ({ ch
       {isRevealed && (
         <button
           onClick={handleReplay}
+          style={{
+            touchAction: "manipulation",
+            WebkitTapHighlightColor: "transparent",
+            WebkitBackdropFilter: "blur(8px)",
+            backdropFilter: "blur(8px)",
+          }}
           className="absolute top-4 right-4 z-40 px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-400 hover:text-[#00f2fe] flex items-center space-x-1 backdrop-blur-md transition-all cursor-pointer opacity-70 hover:opacity-100"
           title="Replay Mystery Unlock Animation"
         >
